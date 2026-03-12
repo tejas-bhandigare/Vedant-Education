@@ -1,54 +1,89 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../models/cart_model.dart';
 
-class CartService {
+class OrderService {
+
   final supabase = Supabase.instance.client;
 
-  /// 🔵 STEP A — Get active cart of current user
-  Future<String?> getActiveCartId() async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return null;
+  Future<void> placeOrder({
+    required String userId,
+    required List<CartItem> items,
+    required double totalAmount,
+  }) async {
 
-    final response = await supabase
-        .from('carts')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('status', 'active')
-        .maybeSingle();
+    try {
 
-    return response?['id'];
-  }
+      /// 1. INSERT ORDER
+      final order = await supabase
+          .from('orders')
+          .insert({
+        'user_id': userId,
+        'total_amount': totalAmount,
+        'status': 'placed',
+      })
+          .select()
+          .single();
 
-  /// 🔵 STEP B — Create cart if not exists
-  Future<String> createCart() async {
-    final user = supabase.auth.currentUser;
+      final orderId = order['id'];
 
-    if (user == null) {
-      throw Exception("User not logged in");
+      /// 2. INSERT ORDER ITEMS
+      for (var item in items) {
+
+        await supabase.from('order_items').insert({
+
+          'order_id': orderId,
+
+          'product_id': item.product.id,
+
+          'product_name': item.product.name,
+
+          'price': item.product.price,
+
+          'quantity': item.quantity,
+
+          'image': item.product.image,
+
+        });
+      }
+
+    } catch (e) {
+
+      print("Order error: $e");
+
+      rethrow;
     }
+  }
 
-    print("CREATING CART FOR USER = ${user.id}");
+
+  /// FETCH USER ORDERS
+///
+///
+  Future<List<Map<String, dynamic>>> fetchOrders(String userId) async {
 
     final response = await supabase
-        .from('carts')
-        .insert({
-      'user_id': user.id,
-      'status': 'active',
-    })
-        .select('id')
-        .single();
+        .from('orders')
+        .select()
+        .eq('user_id', userId)
+        .order('created_at', ascending: false);
 
-    print("CART CREATED = ${response['id']}");
-
-    return response['id'];
+    return List<Map<String, dynamic>>.from(response);
   }
+  // Future<List<Map<String, dynamic>>> fetchOrders(String userId) async {
+  //
+  //   final orders = await supabase
+  //       .from('orders')
+  //       .select()
+  //       .eq('user_id', userId)
+  //       .order('created_at', ascending: false);
+  //
+  //   return orders;
+  // }
 
-
-  /// 🔵 STEP D — Fetch cart items (for cart screen)
-  Stream<List<Map<String, dynamic>>> getCartItems() {
-    return supabase
-        .from('cart_items')
-        .stream(primaryKey: ['id']);
-  }
-
-  Future<void> addToCart({required String productId, required double price}) async {}
 }
+
+
+
+
+
+
+

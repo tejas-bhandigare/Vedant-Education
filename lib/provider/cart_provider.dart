@@ -10,6 +10,19 @@ class CartProvider extends ChangeNotifier {
 
   List<CartItem> get items => _items;
 
+
+  double get totalAmount {
+
+    double total = 0;
+
+    for (var item in _items) {
+      total += item.product.price * item.quantity;
+    }
+
+    return total;
+  }
+
+
   // ✅ ADD TO CART
   void addToCart(Product product) {
     final index =
@@ -99,3 +112,4 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+

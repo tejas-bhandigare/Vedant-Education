@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../service/auth_service.dart';
+import 'admin_dashboard.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -27,6 +28,18 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     try {
+
+      String email = _emailController.text.trim();
+      String password = _passwordController.text.trim();
+
+      /// ADMIN LOGIN
+      if (email == "admin@vedant.com" && password == "Admin@123") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AdminDashboard()),
+        );
+        return;
+      }
       await AuthService().login(
         _emailController.text.trim(),
         _passwordController.text.trim(),
@@ -68,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const Text(
                 "Login to your account",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Color(0xFF6B7280)),
+                style: TextStyle(color: Color(0xFF070707)),
               ),
 
               const SizedBox(height: 40),
@@ -93,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: _isLoading ? null : _login,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2563EB),
+                  backgroundColor: const Color(0xF4448AFF),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -101,7 +114,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text("Login"),
+                    : const Text("Login",
+                  style: TextStyle(color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,),),
               ),
 
               const SizedBox(height: 16),
@@ -109,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don’t have an account? "),
+                  const Text("Don’t have an account ? "),
                   TextButton(
                     onPressed: () {
                       Navigator.push(

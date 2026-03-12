@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:vedant_education_app/screen/category_screen.dart';
+import '../service/order_service.dart';
+import 'admin_dashboard.dart';
 import 'cart_screen.dart';
-import 'category_screen.dart';
+import 'contact_us.dart';
 import 'home.dart';
+import 'login_screen.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -13,29 +17,23 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
 
-  /// 🔥 OLD NAVIGATION LOGIC (UNCHANGED)
-  int _selectedIndex = 2;
+  int _selectedIndex = 2; // Account selected
 
+  /// ================= BOTTOM NAVIGATION =================
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
 
     if (index == 0) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
-    }
-
-    if (index == 1) {
+    } else if (index == 1) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const CategoryPage()),
       );
-    }
-
-    if (index == 3) {
+    } else if (index == 3) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const CartPage()),
@@ -43,18 +41,143 @@ class _AccountPageState extends State<AccountPage> {
     }
   }
 
-  /// 🔥 NEW PROFILE DATA
+  /// ================= PROFILE DATA =================
   String name = "User";
   String email = "";
   String phone = "";
+  double rating = 0;
 
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController phoneCtrl = TextEditingController();
   final TextEditingController feedbackCtrl = TextEditingController();
 
-  /// 🔥 EDIT PROFILE DIALOG
+
+
+  ///fedddback
+
+  void _openFeedbackDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+
+              /// 🔹 TITLE WITH CLOSE BUTTON
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Rate Us"),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+
+                    /// ⭐ STAR RATING
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(5, (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setDialogState(() {
+                              rating = index + 1.0;
+                            });
+                          },
+                          child: Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 4),
+                            child: Icon(
+                              Icons.star,
+                              size: 28,
+                              color: index < rating
+                                  ? Colors.amber
+                                  : Colors.grey,
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    /// 📝 COMMENT BOX
+                    TextField(
+                      controller: feedbackCtrl,
+                      maxLines: 4,
+                      decoration: const InputDecoration(
+                        hintText: "Write your feedback...",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("Cancel"),
+                ),
+
+                /// ✅ SUBMIT BUTTON WITH VALIDATION
+                ElevatedButton(
+                  onPressed: () {
+                    if (rating == 0 &&
+                        feedbackCtrl.text.trim().isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                          Text("Please give rating or feedback"),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
+
+                    Navigator.pop(context);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                        Text("Feedback submitted successfully"),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+
+                    feedbackCtrl.clear();
+                    rating = 0;
+                  },
+                  child: const Text("Submit"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+
+
+
+
+
+  /// ================= EDIT PROFILE POPUP =================
   void _openEditDialog() {
+
     nameCtrl.text = name;
     emailCtrl.text = email;
     phoneCtrl.text = phone;
@@ -63,23 +186,31 @@ class _AccountPageState extends State<AccountPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
+
           title: const Text("Edit Profile"),
+
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+
               TextField(
                 controller: nameCtrl,
                 decoration: const InputDecoration(labelText: "Name"),
               ),
+
               const SizedBox(height: 10),
+
               TextField(
                 controller: emailCtrl,
                 decoration: const InputDecoration(labelText: "Email"),
               ),
+
               const SizedBox(height: 10),
+
               TextField(
                 controller: phoneCtrl,
                 keyboardType: TextInputType.phone,
@@ -87,18 +218,23 @@ class _AccountPageState extends State<AccountPage> {
               ),
             ],
           ),
+
           actions: [
+
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text("Cancel"),
             ),
+
             ElevatedButton(
               onPressed: () {
+
                 setState(() {
                   name = nameCtrl.text;
                   email = emailCtrl.text;
                   phone = phoneCtrl.text;
                 });
+
                 Navigator.pop(context);
               },
               child: const Text("Save"),
@@ -109,11 +245,142 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  /// 🔥 UI
+
+
+
+
+
+
+
+
+  /// ================= LOGOUT FUNCTION =================
+  Future<void> logout() async {
+
+    await Supabase.instance.client.auth.signOut();
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+          (route) => false,
+    );
+  }
+
+  /// ================= ORDERS SECTION =================
+  Widget ordersSection() {
+
+    final user = Supabase.instance.client.auth.currentUser;
+
+    if (user == null) {
+      return const Text("Please login to see your orders");
+    }
+
+    final orderService = OrderService();
+
+    return FutureBuilder<List<Map<String, dynamic>>>(
+
+      future: orderService.fetchOrders(user.id),
+
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return const Text("Error loading orders");
+        }
+
+        final orders = snapshot.data ?? [];
+
+        if (orders.isEmpty) {
+          return const Text("No orders yet");
+        }
+
+        //   return ListView.builder(
+        //
+        //     shrinkWrap: true,
+        //     physics: const NeverScrollableScrollPhysics(),
+        //
+        //     itemCount: orders.length,
+        //
+        //     itemBuilder: (context, index) {
+        //
+        //       final order = orders[index];
+        //
+        //       return Card(
+        //
+        //         margin: const EdgeInsets.symmetric(vertical: 6),
+        //
+        //         child: ListTile(
+        //
+        //           leading: const Icon(Icons.shopping_bag),
+        //
+        //           title: Text(
+        //             "Order ID: ${order['id'].toString().substring(0, 8)}",
+        //             style: const TextStyle(fontWeight: FontWeight.bold),
+        //           ),
+        //
+        //           subtitle: Text(
+        //             "₹${order['total_amount']}  |  ${order['status']}",
+        //           ),
+        //
+        //           trailing: Text(
+        //             order['created_at']
+        //                 .toString()
+        //                 .substring(0, 10),
+        //             style: const TextStyle(fontSize: 12),
+        //           ),
+        //         ),
+        //       );
+        //     },
+        //   );
+        // },
+        return Column(
+          children: List.generate(orders.length, (index) {
+            final order = orders[index];
+
+            return Card(
+              margin: const EdgeInsets.symmetric(vertical: 6),
+
+              child: ListTile(
+
+                leading: const Icon(Icons.shopping_bag),
+
+                title: Text(
+                  "Order ID: ${order['id'].toString().substring(0, 8)}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+
+                subtitle: Text(
+                  "₹${order['total_amount']}  |  ${order['status']}",
+                ),
+
+                trailing: Text(
+                  order['created_at']
+                      .toString()
+                      .substring(0, 10),
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+            );
+          }),
+        );
+      });
+  }
+
+
+
+
+  /// ================= MAIN BUILD =================
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       backgroundColor: const Color(0xffF7F1F8),
+
       appBar: AppBar(
         title: const Text("Account"),
         centerTitle: true,
@@ -122,38 +389,56 @@ class _AccountPageState extends State<AccountPage> {
         foregroundColor: Colors.black,
       ),
 
-      /// ✅ NEW ACCOUNT BODY (OLD CENTER TEXT REMOVED)
       body: SingleChildScrollView(
+
         padding: const EdgeInsets.all(16),
+
         child: Column(
+
+          crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
 
-            /// PROFILE CARD
+            /// ================= PROFILE CARD =================
             Container(
+
               padding: const EdgeInsets.all(16),
+
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
               ),
+
               child: Row(
+
                 children: [
+
                   const CircleAvatar(
                     radius: 28,
-                    backgroundColor: Colors.deepPurple,
-                    child: Icon(Icons.person, color: Colors.white),
+                    backgroundColor: Colors.blue,
+                    child: Icon(Icons.person,
+                        color: Colors.white, size: 28),
                   ),
+
                   const SizedBox(width: 12),
+
                   Expanded(
+
                     child: Column(
+
                       crossAxisAlignment: CrossAxisAlignment.start,
+
                       children: [
+
                         Text(
                           "Hi $name",
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold),
                         ),
+
                         const SizedBox(height: 4),
+
                         Text(
                           email.isEmpty
                               ? "Tap Edit to add details"
@@ -163,11 +448,13 @@ class _AccountPageState extends State<AccountPage> {
                       ],
                     ),
                   ),
+
                   TextButton(
                     onPressed: _openEditDialog,
                     child: const Text(
                       "Edit",
-                      style: TextStyle(color: Colors.deepPurple),
+                      style:
+                      TextStyle(color: Colors.blue),
                     ),
                   ),
                 ],
@@ -176,188 +463,188 @@ class _AccountPageState extends State<AccountPage> {
 
             const SizedBox(height: 20),
 
-            /// ACTION BUTTONS
+            /// ================= ACTION BUTTONS =================
             GridView.count(
+
               crossAxisCount: 2,
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              physics:
+              const NeverScrollableScrollPhysics(),
+
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
               childAspectRatio: 3,
-              children: const [
-                _ActionItem(icon: Icons.shopping_bag, text: "Orders"),
-                _ActionItem(icon: Icons.favorite, text: "Wishlist"),
-                _ActionItem(icon: Icons.warning, text: "Defective Product"),
-                _ActionItem(icon: Icons.help_outline, text: "Help Us"),
+
+              children: [
+
+                _ActionItem(
+                  icon: Icons.shopping_bag,
+                  text: "Orders",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const OrdersPage(),
+                      ),
+                    );
+                  },
+                ),
+
+                _ActionItem(
+                    icon: Icons.favorite,
+                    text: "Feedback",
+                onTap:_openFeedbackDialog,
+                ),
+
+                _ActionItem(
+                    icon: Icons.warning,
+                    text: "Defective Product", onTap: () {  },),
+
+                _ActionItem(
+                  icon: Icons.help_outline,
+                  text: "Help Us",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ContactPage(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
 
             const SizedBox(height: 24),
 
-            /// FEEDBACK SECTION
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Feedback",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  /// TEXTFIELD
-                  TextField(
-                    controller: feedbackCtrl,
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                      hintText: "Write your feedback here...",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  /// ✅ SUBMIT BUTTON (NEW)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () {
-                        final text = feedbackCtrl.text.trim();
-
-                        if (text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Please enter your feedback"),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Feedback submitted successfully"),
-                              backgroundColor: Colors.green,
-                            ),
-                          );
-                          feedbackCtrl.clear();
-                        }
-                      },
-                      child: const Text(
-                        "Submit",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
+            /// ================= MY ORDERS =================
+            const Text(
+              "My Orders",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
 
-            // Container(
-            //   padding: const EdgeInsets.all(16),
-            //   decoration: BoxDecoration(
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(16),
-            //   ),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       const Text(
-            //         "Feedback",
-            //         style: TextStyle(
-            //             fontSize: 16,
-            //             fontWeight: FontWeight.bold),
-            //       ),
-            //       const SizedBox(height: 10),
-            //       TextField(
-            //         controller: feedbackCtrl,
-            //         maxLines: 4,
-            //         decoration: InputDecoration(
-            //           hintText: "Write your feedback here...",
-            //           border: OutlineInputBorder(
-            //             borderRadius: BorderRadius.circular(12),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            const SizedBox(height: 10),
 
-            const SizedBox(height: 90),
+            ordersSection(),
+
+            const SizedBox(height: 24),
+
+
+            const SizedBox(height: 20),
+
+            /// ================= LOGOUT BUTTON =================
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+
+                icon: const Icon(Icons.logout),
+
+                label: const Text(
+                  "Logout",
+                  style: TextStyle(fontSize: 16),
+                ),
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+
+                onPressed: () async {
+
+                  await Supabase.instance.client.auth.signOut();
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        (route) => false,
+                  );
+
+                },
+              ),
+            ),
+
+            const SizedBox(height: 40),
+
           ],
         ),
       ),
 
-      /// 🔥 OLD BOTTOM NAVBAR (UNCHANGED)
+
+      /// ===== BOTTOM NAV =====
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.purple,
+        selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view),
-            label: 'Category',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.grid_view), label: 'Category'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
         ],
       ),
     );
   }
+
 }
 
-/// ACTION ITEM WIDGET
+
+
+
+
+/// ================= ACTION BUTTON =================
+///
+///
+///
+
+
 class _ActionItem extends StatelessWidget {
+
   final IconData icon;
   final String text;
+  final VoidCallback onTap;   // ✅ STORE IT
 
-  const _ActionItem({required this.icon, required this.text});
+  const _ActionItem({
+    required this.icon,
+    required this.text,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.deepPurple),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontWeight: FontWeight.w500),
+
+    return InkWell(                 // ✅ MAKE CLICKABLE
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.blue),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                text,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -365,86 +652,14 @@ class _ActionItem extends StatelessWidget {
 
 
 
-// import 'package:flutter/material.dart';
-//
-// import 'cart_screen.dart';
-// import 'category_screen.dart';
-// import 'home.dart';
-//
-// class AccountPage extends StatefulWidget {
-//   const AccountPage({super.key});
-//
-//   @override
-//   State<AccountPage> createState() => _AccountPageState();
-// }
-//
-// class _AccountPageState extends State<AccountPage> {
-//
-//   int _selectedIndex = 2; // Account selected
-//
-//   void _onItemTapped(int index) {
-//     setState(() {
-//       _selectedIndex = index;
-//     });
-//
-//     if (index == 0) {
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(builder: (_) => const HomeScreen()),
-//       );
-//     }
-//
-//     if (index == 1) {
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(builder: (_) => const CategoryPage()),
-//       );
-//     }
-//
-//     if (index == 3) {
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(builder: (_) => const CartPage()),
-//       );
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text("Account")),
-//       body: const Center(
-//         child: Text(
-//           "Account Page",
-//           style: TextStyle(fontSize: 22),
-//         ),
-//       ),
-//
-//       bottomNavigationBar: BottomNavigationBar(
-//         type: BottomNavigationBarType.fixed,
-//         currentIndex: _selectedIndex,
-//         selectedItemColor: Colors.purple,
-//         unselectedItemColor: Colors.grey,
-//         onTap: _onItemTapped,
-//         items: const [
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.home),
-//             label: 'Home',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.grid_view),
-//             label: 'Category',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.person),
-//             label: 'Account',
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.shopping_cart),
-//             label: 'Cart',
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+
+
+
+
+
+
+
+
+
+
+
