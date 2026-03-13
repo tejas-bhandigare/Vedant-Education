@@ -12,7 +12,7 @@ class AdminPage extends StatelessWidget {
       ),
       body: const Center(
         child: Text(
-          "This is Admin Page",
+          "This is Admin Pae",
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
