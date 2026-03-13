@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vedant_education_app/screen/admin.dart';
 import '../service/auth_service.dart';
-import 'admin_dashboard.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (email == "admin@vedant.com" && password == "Admin@123") {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const AdminDashboard()),
+          MaterialPageRoute(builder: (_) => const AdminPage()),
         );
         return;
       }

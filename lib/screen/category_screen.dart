@@ -811,7 +811,7 @@ class ContentBox extends StatelessWidget {
                 imagePath,
                 height: 80,
                 width: 80,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               ),
               const SizedBox(height: 8),
               Text(title, textAlign: TextAlign.center),

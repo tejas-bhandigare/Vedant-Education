@@ -31,21 +31,6 @@ class MyApp extends StatelessWidget {
 // home:AdminPage(),
         // home:AdminDashboard(),
         // home: OrderVerificationScreen(),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // home: ProductDetailsPage(title: '', productId: '', price: 0),
       ),
     );

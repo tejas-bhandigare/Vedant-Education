@@ -91,17 +91,17 @@ class ProductDetailsPage extends StatelessWidget {
             Container(
               height: 220,
               width: double.infinity,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(12),
-              ),
+              // decoration: BoxDecoration(
+              //   border: Border.all(color: Colors.grey),
+              //   borderRadius: BorderRadius.circular(12),
+              // ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
                   product.image,
                   width: double.infinity,
                   height: double.infinity,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),

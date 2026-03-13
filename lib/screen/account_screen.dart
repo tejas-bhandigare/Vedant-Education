@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vedant_education_app/screen/category_screen.dart';
 import '../service/order_service.dart';
-import 'admin_dashboard.dart';
 import 'cart_screen.dart';
 import 'contact_us.dart';
 import 'home.dart';
 import 'login_screen.dart';
+import 'orders_page.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -42,17 +42,18 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   /// ================= PROFILE DATA =================
+  /// ================= PROFILE DATA =================
   String name = "User";
   String email = "";
   String phone = "";
+  String address = "";   // ✅ ADD THIS
   double rating = 0;
 
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController phoneCtrl = TextEditingController();
+  final TextEditingController addressCtrl = TextEditingController(); // ✅ ADD
   final TextEditingController feedbackCtrl = TextEditingController();
-
-
 
   ///fedddback
 
@@ -181,6 +182,8 @@ class _AccountPageState extends State<AccountPage> {
     nameCtrl.text = name;
     emailCtrl.text = email;
     phoneCtrl.text = phone;
+    addressCtrl.text = address;   // ✅ ADD
+
 
     showDialog(
       context: context,
@@ -216,6 +219,16 @@ class _AccountPageState extends State<AccountPage> {
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(labelText: "Phone"),
               ),
+
+              const SizedBox(height: 10),
+
+              TextField(
+                controller: addressCtrl,
+                maxLines: 2,
+                decoration: const InputDecoration(
+                  labelText: "Address",
+                ),
+              ),
             ],
           ),
 
@@ -233,6 +246,7 @@ class _AccountPageState extends State<AccountPage> {
                   name = nameCtrl.text;
                   email = emailCtrl.text;
                   phone = phoneCtrl.text;
+                  address = addressCtrl.text;  // ✅ ADD
                 });
 
                 Navigator.pop(context);
@@ -265,110 +279,6 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  /// ================= ORDERS SECTION =================
-  Widget ordersSection() {
-
-    final user = Supabase.instance.client.auth.currentUser;
-
-    if (user == null) {
-      return const Text("Please login to see your orders");
-    }
-
-    final orderService = OrderService();
-
-    return FutureBuilder<List<Map<String, dynamic>>>(
-
-      future: orderService.fetchOrders(user.id),
-
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        if (snapshot.hasError) {
-          return const Text("Error loading orders");
-        }
-
-        final orders = snapshot.data ?? [];
-
-        if (orders.isEmpty) {
-          return const Text("No orders yet");
-        }
-
-        //   return ListView.builder(
-        //
-        //     shrinkWrap: true,
-        //     physics: const NeverScrollableScrollPhysics(),
-        //
-        //     itemCount: orders.length,
-        //
-        //     itemBuilder: (context, index) {
-        //
-        //       final order = orders[index];
-        //
-        //       return Card(
-        //
-        //         margin: const EdgeInsets.symmetric(vertical: 6),
-        //
-        //         child: ListTile(
-        //
-        //           leading: const Icon(Icons.shopping_bag),
-        //
-        //           title: Text(
-        //             "Order ID: ${order['id'].toString().substring(0, 8)}",
-        //             style: const TextStyle(fontWeight: FontWeight.bold),
-        //           ),
-        //
-        //           subtitle: Text(
-        //             "₹${order['total_amount']}  |  ${order['status']}",
-        //           ),
-        //
-        //           trailing: Text(
-        //             order['created_at']
-        //                 .toString()
-        //                 .substring(0, 10),
-        //             style: const TextStyle(fontSize: 12),
-        //           ),
-        //         ),
-        //       );
-        //     },
-        //   );
-        // },
-        return Column(
-          children: List.generate(orders.length, (index) {
-            final order = orders[index];
-
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 6),
-
-              child: ListTile(
-
-                leading: const Icon(Icons.shopping_bag),
-
-                title: Text(
-                  "Order ID: ${order['id'].toString().substring(0, 8)}",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-
-                subtitle: Text(
-                  "₹${order['total_amount']}  |  ${order['status']}",
-                ),
-
-                trailing: Text(
-                  order['created_at']
-                      .toString()
-                      .substring(0, 10),
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ),
-            );
-          }),
-        );
-      });
-  }
 
 
 
@@ -445,6 +355,16 @@ class _AccountPageState extends State<AccountPage> {
                               : email,
                           style: const TextStyle(color: Colors.grey),
                         ),
+
+                        const SizedBox(height: 4),
+
+                        Text(
+                          address.isEmpty ? "Add your address" : address,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -517,21 +437,6 @@ class _AccountPageState extends State<AccountPage> {
 
             const SizedBox(height: 24),
 
-            /// ================= MY ORDERS =================
-            const Text(
-              "My Orders",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            ordersSection(),
-
-            const SizedBox(height: 24),
-
 
             const SizedBox(height: 20),
 
@@ -598,14 +503,7 @@ class _AccountPageState extends State<AccountPage> {
 
 
 
-
-
 /// ================= ACTION BUTTON =================
-///
-///
-///
-
-
 class _ActionItem extends StatelessWidget {
 
   final IconData icon;
