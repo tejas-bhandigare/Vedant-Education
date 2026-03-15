@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vedant_education_app/provider/cart_provider.dart';
+import 'package:vedant_education_app/screen/admin.dart';
 import 'supabase/supabase_client.dart';
 import 'auth/auth_gate.dart';
 
@@ -26,9 +27,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
 
         // ✅ Use whichever screen you want
-         home: AuthGate(),
+        //  home: AuthGate(),
         //  home: HomeScreen(),
-// home:AdminPage(),
+       home:AdminPage(),
         // home:AdminDashboard(),
         // home: OrderVerificationScreen(),
         // home: ProductDetailsPage(title: '', productId: '', price: 0),
