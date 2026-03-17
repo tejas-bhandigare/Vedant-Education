@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vedant_education_app/provider/cart_provider.dart';
 import 'package:vedant_education_app/screen/admin.dart';
+import 'package:vedant_education_app/screen/home.dart';
+import 'package:vedant_education_app/screen/product_details.dart';
+import 'package:vedant_education_app/screen/product_management_page.dart';
 import 'supabase/supabase_client.dart';
 import 'auth/auth_gate.dart';
 
@@ -27,12 +30,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
 
         // ✅ Use whichever screen you want
-        //  home: AuthGate(),
-        //  home: HomeScreen(),
-       home:AdminPage(),
-        // home:AdminDashboard(),
+          home: AuthGate(),
+        // home: HomeScreen(),
+        //home:AdminPage(),
+         //home:ProductManagementPage(),
+         //home:AdminDashboard(),
         // home: OrderVerificationScreen(),
-        // home: ProductDetailsPage(title: '', productId: '', price: 0),
+       //  home: ProductDetailsPage(title: '', productId: '', price: 0),
       ),
     );
   }

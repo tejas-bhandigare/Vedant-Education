@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vedant_education_app/screen/category_screen.dart';
+import '../auth/auth_gate.dart';
 import '../service/order_service.dart';
 import 'cart_screen.dart';
 import 'contact_us.dart';
@@ -427,7 +428,7 @@ class _AccountPageState extends State<AccountPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ContactPage(),
+                        builder: (context) => const ContactUsPage(),
                       ),
                     );
                   },
@@ -462,16 +463,26 @@ class _AccountPageState extends State<AccountPage> {
                 ),
 
                 onPressed: () async {
-
                   await Supabase.instance.client.auth.signOut();
 
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                    MaterialPageRoute(builder: (_) => const AuthGate()), // ✅ AuthGate, not LoginScreen
                         (route) => false,
                   );
-
                 },
+
+                // onPressed: () async {
+                //
+                //   await Supabase.instance.client.auth.signOut();
+                //
+                //   Navigator.pushAndRemoveUntil(
+                //     context,
+                //     MaterialPageRoute(builder: (_) => const LoginScreen()),
+                //         (route) => false,
+                //   );
+                //
+                // },
               ),
             ),
 
