@@ -84,17 +84,17 @@ class _CategoryPageState extends State<CategoryPage> {
           /// ===== LEFT CATEGORY LIST =====
           Container(
             width: 120,
-            color: Colors.grey.shade200,
+            color: Colors.blue.shade50,
             child: ListView.builder(
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () => setState(() => selectedCategoryIndex = index),
                   child: Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(15),
                     color: selectedCategoryIndex == index
                         ? Colors.white
-                        : Colors.grey.shade200,
+                        : Colors.blue.shade50,
                     child: Text(
                       categories[index],
                       style: TextStyle(

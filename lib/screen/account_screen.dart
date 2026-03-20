@@ -326,7 +326,7 @@ class _AccountPageState extends State<AccountPage> {
 
                   const CircleAvatar(
                     radius: 28,
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.blueAccent,
                     child: Icon(Icons.person,
                         color: Colors.white, size: 28),
                   ),

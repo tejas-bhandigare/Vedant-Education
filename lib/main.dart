@@ -8,11 +8,15 @@ import 'package:vedant_education_app/screen/product_management_page.dart';
 import 'supabase/supabase_client.dart';
 import 'auth/auth_gate.dart';
 
+import 'package:flutter/services.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // ✅ Supabase initialization (KEEP THIS)
   await SupabaseClientManager.initialize();
+
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: SystemUiOverlay.values);
 
   runApp(const MyApp());
 }
@@ -29,14 +33,14 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
 
-        // ✅ Use whichever screen you want
-          home: AuthGate(),
-        // home: HomeScreen(),
-        //home:AdminPage(),
+         // ✅ Use whichever screen you want
+           home: AuthGate(),
+         //home: HomeScreen(),
+         //home:AdminPage(),
          //home:ProductManagementPage(),
          //home:AdminDashboard(),
-        // home: OrderVerificationScreen(),
-       //  home: ProductDetailsPage(title: '', productId: '', price: 0),
+         //home: OrderVerificationScreen(),
+         //home: ProductDetailsPage(title: '', productId: '', price: 0),
       ),
     );
   }

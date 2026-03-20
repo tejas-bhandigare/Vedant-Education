@@ -65,12 +65,22 @@ class ProductData {
       "image": "assets/image/Bag4.jpeg",
       "description": "Premium quality strong school bag."
     },
+
+
     /// ================= PLAY GROUP BOOKS =================
+
+
     "PlayGroup Merged Books": {
       "name": "PlayGroup Merged Books",
       "price": 749.0,
       "image": "assets/image/PlayGroup.jpeg",
       "description": "Complete PlayGroup merged books set",
+      "pdfs": [
+        {"label": "Book 1", "asset": "assets/pdfs/playgroup_merged/Play_group_book1.pdf"},
+        {"label": "Book 2", "asset": "assets/pdfs/playgroup_merged/Play_group_book2.pdf"},
+      ],
+
+
     },
 
     "PlayGroup Subject Wise": {
@@ -78,14 +88,25 @@ class ProductData {
       "price": 599.0,
       "image": "assets/image/PlayGroup.jpeg",
       "description": "PlayGroup subject wise books set",
+      "pdfs": [
+        {"label": "English",  "asset": "assets/pdfs/playgroup_subject/PG English 1.8.1.pdf"},
+        {"label": "Maths",    "asset": "assets/pdfs/playgroup_subject/PG Maths 1.8.1.pdf"},
+        {"label": "EVS",      "asset": "assets/pdfs/playgroup_subject/PG EVS 1.8.1.pdf"},
+      ],
     },
 
     /// ================= NURSERY =================
+
+
     "Nursery Merged Books": {
       "name": "Nursery Merged Books",
       "price": 799.0,
       "image": "assets/image/Nursery.jpeg",
       "description": "Complete Nursery merged books",
+      "pdfs": [
+        {"label": "Book 1", "asset": "assets/pdfs/nursery_merged/book1.pdf"},
+        {"label": "Book 2", "asset": "assets/pdfs/nursery_merged/book2.pdf"},
+      ],
     },
 
     "Nursery Subject Wise": {
@@ -93,6 +114,12 @@ class ProductData {
       "price": 649.0,
       "image": "assets/image/Nursery.jpeg",
       "description": "Nursery subject wise books",
+      "pdfs": [
+        {"label": "English",  "asset": "assets/pdfs/nursery_subject/english.pdf"},
+        {"label": "Maths",    "asset": "assets/pdfs/nursery_subject/maths.pdf"},
+        {"label": "EVS",      "asset": "assets/pdfs/nursery_subject/evs.pdf"},
+      ],
+
     },
 
     /// ================= JUNIOR =================
@@ -101,6 +128,10 @@ class ProductData {
       "price": 899.0,
       "image": "assets/image/JuniorKgEnglish.jpeg",
       "description": "Complete Junior KG merged books",
+      "pdfs": [
+        {"label": "Book 1", "asset": "assets/pdfs/junior_merged/book1.pdf"},
+        {"label": "Book 2", "asset": "assets/pdfs/junior_merged/book2.pdf"},
+      ],
     },
 
     "Junior Subject Wise": {
@@ -108,6 +139,11 @@ class ProductData {
       "price": 699.0,
       "image": "assets/image/JuniorKgEnglish.jpeg",
       "description": "Junior KG subject wise books",
+      "pdfs": [
+        {"label": "English",  "asset": "assets/pdfs/junior_subject/english.pdf"},
+        {"label": "Maths",    "asset": "assets/pdfs/junior_subject/maths.pdf"},
+        {"label": "EVS",      "asset": "assets/pdfs/junior_subject/evs.pdf"},
+      ],
     },
 
     /// ================= SENIOR =================
@@ -116,6 +152,10 @@ class ProductData {
       "price": 949.0,
       "image": "assets/image/sakshi.png",
       "description": "Complete Senior KG merged books",
+      "pdfs": [
+        {"label": "Book 1", "asset": "assets/pdfs/senior_merged/book1.pdf"},
+        {"label": "Book 2", "asset": "assets/pdfs/senior_merged/book2.pdf"},
+      ],
     },
 
     "Senior Subject Wise": {
@@ -123,6 +163,11 @@ class ProductData {
       "price": 749.0,
       "image": "assets/image/sakshi.png",
       "description": "Senior KG subject wise books",
+      "pdfs": [
+        {"label": "English",  "asset": "assets/pdfs/senior_subject/english.pdf"},
+        {"label": "Maths",    "asset": "assets/pdfs/senior_subject/maths.pdf"},
+        {"label": "EVS",      "asset": "assets/pdfs/senior_subject/evs.pdf"},
+      ],
     },
 
     "Senior KG Worksheet": {
@@ -130,6 +175,10 @@ class ProductData {
       "price": 299.0,
       "image": "assets/image/sakshi.png",
       "description": "Senior KG worksheets",
+      "pdfs": [
+        {"label": "Worksheet 1", "asset": "assets/pdfs/senior_worksheet/worksheet1.pdf"},
+        {"label": "Worksheet 2", "asset": "assets/pdfs/senior_worksheet/worksheet2.pdf"},
+      ],
     },
 
     /// ================= ENGLISH CURSIVE =================
