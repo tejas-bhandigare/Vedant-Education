@@ -5,63 +5,72 @@ class ProductData {
     /// ================= BAGS =================
     "bag1": {
       "name": "Bag 1",
-      "price": 450.0,
+      "mrp": 450.0,
+      "discount": 27,
       "image": "assets/image/Bag1.jpg",
       "description": "Durable school bag for students",
     },
 
     "bag2": {
       "name": "Bag 2",
-      "price": 500.0,
+      "mrp": 500.0,
+      "discount": 27,
       "image": "assets/image/Bag2.jpg",
       "description": "Premium quality school bag",
     },
 
     "bag3": {
       "name": "Kids School Bag",
-      "price": 850.0,
+      "mrp": 850.0,
+      "discount": 27,
       "image": "assets/image/Bag3.jpg",
       "description": "Comfortable kids school bag with adjustable straps."
     },
 
     "bag4": {
       "name": "Junior School Bag",
-      "price": 900.0,
+      "mrp": 900.0,
+      "discount": 27,
       "image": "assets/image/Bag4.jpeg",
       "description": "Stylish junior school bag with strong zip and pockets."
     },
 
     "bag5": {
       "name": "Senior School Bag",
-      "price": 1050.0,
+      "mrp": 1050.0,
+      "discount": 27,
       "image": "assets/image/Bag4.jpeg",
       "description": "Large capacity senior school bag for books."
     },
 
     "bag6": {
       "name": "Waterproof School Bag",
-      "price": 1100.0,
+      "mrp": 1100.0,
+      "discount": 27,
       "image": "assets/image/Bag4.jpeg",
       "description": "Waterproof school bag to protect books."
     },
 
     "bag7": {
       "name": "Lightweight School Bag",
-      "price": 950.0,
+      "mrp": 950.0,
+      "discount": 27,
       "image": "assets/image/Bag4.jpeg",
       "description": "Lightweight bag for daily school use."
     },
 
     "bag8": {
       "name": "Multi Pocket Bag",
-      "price": 1200.0,
+      "mrp": 1200.0,
+      "discount": 27,
       "image": "assets/image/Bag4.jpeg",
       "description": "Multi pocket bag for organizing books."
     },
 
     "bag9": {
       "name": "Premium School Bag",
-      "price": 1350.0,
+      "mrp": 1350.0,
+      "discount": 27,
       "image": "assets/image/Bag4.jpeg",
       "description": "Premium quality strong school bag."
     },
@@ -72,7 +81,8 @@ class ProductData {
 
     "PlayGroup Merged Books": {
       "name": "PlayGroup Merged Books",
-      "price": 749.0,
+      "mrp": 749.0,
+      "discount": 27,
       "image": "assets/image/PlayGroup.jpeg",
       "description": "Complete PlayGroup merged books set",
       "pdfs": [
@@ -85,7 +95,8 @@ class ProductData {
 
     "PlayGroup Subject Wise": {
       "name": "PlayGroup Subject Wise",
-      "price": 599.0,
+      "mrp": 599.0,
+      "discount": 27,
       "image": "assets/image/PlayGroup.jpeg",
       "description": "PlayGroup subject wise books set",
       "pdfs": [
@@ -100,7 +111,8 @@ class ProductData {
 
     "Nursery Merged Books": {
       "name": "Nursery Merged Books",
-      "price": 799.0,
+      "mrp": 799.0,
+      "discount": 27,
       "image": "assets/image/Nursery.jpeg",
       "description": "Complete Nursery merged books",
       "pdfs": [
@@ -111,7 +123,8 @@ class ProductData {
 
     "Nursery Subject Wise": {
       "name": "Nursery Subject Wise",
-      "price": 649.0,
+      "mrp": 649.0,
+      "discount": 27,
       "image": "assets/image/Nursery.jpeg",
       "description": "Nursery subject wise books",
       "pdfs": [
@@ -125,7 +138,8 @@ class ProductData {
     /// ================= JUNIOR =================
     "Junior Merged Books": {
       "name": "Junior Merged Books",
-      "price": 899.0,
+      "mrp": 899.0,
+      "discount": 27,
       "image": "assets/image/JuniorKgEnglish.jpeg",
       "description": "Complete Junior KG merged books",
       "pdfs": [
@@ -136,7 +150,8 @@ class ProductData {
 
     "Junior Subject Wise": {
       "name": "Junior Subject Wise",
-      "price": 699.0,
+      "mrp": 699.0,
+      "discount": 27,
       "image": "assets/image/JuniorKgEnglish.jpeg",
       "description": "Junior KG subject wise books",
       "pdfs": [
@@ -149,7 +164,8 @@ class ProductData {
     /// ================= SENIOR =================
     "Senior Merged Books": {
       "name": "Senior Merged Books",
-      "price": 949.0,
+      "mrp": 949.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "Complete Senior KG merged books",
       "pdfs": [
@@ -160,7 +176,8 @@ class ProductData {
 
     "Senior Subject Wise": {
       "name": "Senior Subject Wise",
-      "price": 749.0,
+      "mrp": 749.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "Senior KG subject wise books",
       "pdfs": [
@@ -172,7 +189,8 @@ class ProductData {
 
     "Senior KG Worksheet": {
       "name": "Senior KG Worksheet",
-      "price": 299.0,
+      "mrp": 299.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "Senior KG worksheets",
       "pdfs": [
@@ -184,14 +202,16 @@ class ProductData {
     /// ================= ENGLISH CURSIVE =================
     "English Cursive Level 1": {
       "name": "English Cursive Level 1",
-      "price": 199.0,
+      "mrp": 199.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "English cursive writing level 1",
     },
 
     "English Cursive Level 2": {
       "name": "English Cursive Level 2",
-      "price": 249.0,
+      "mrp": 249.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "English cursive writing level 2",
     },
@@ -199,14 +219,16 @@ class ProductData {
     /// ================= MARATHI =================
     "मराठी Nursery Book": {
       "name": "मराठी Nursery Book",
-      "price": 199.0,
+      "mrp": 199.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "Marathi Nursery language book",
     },
 
     "मराठी Junior Kg Book": {
       "name": "मराठी Junior Kg Book",
-      "price": 249.0,
+      "mrp": 249.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "Marathi Junior KG book",
     },
@@ -214,42 +236,48 @@ class ProductData {
     /// ================= CERTIFICATES =================
     "Certificate 1": {
       "name": "Certificate 1",
-      "price": 50.0,
+      "mrp": 50.0,
+      "discount": 27,
       "image": "assets/image/Certification1.jpeg",
       "description": "School certificate",
     },
 
     "Certificate 2": {
       "name": "Certificate 2",
-      "price": 50.0,
+      "mrp": 50.0,
+      "discount": 27,
       "image": "assets/image/Certification2.jpeg",
       "description": "Student achievement certificate",
     },
 
     "Certificate 3": {
       "name": "Certificate 3",
-      "price": 70.0,
+      "mrp": 70.0,
+      "discount": 27,
       "image": "assets/image/Certification3.jpeg",
       "description": "Participation certificate",
     },
 
     "Certificate 4": {
       "name": "Certificate 4",
-      "price": 80.0,
+      "mrp": 80.0,
+      "discount": 27,
       "image": "assets/image/Certification4.jpeg",
       "description": "Completion certificate",
     },
 
     "Certificate 5": {
       "name": "Certificate 4",
-      "price": 80.0,
+      "mrp": 80.0,
+      "discount": 27,
       "image": "assets/image/Certification5.jpeg",
       "description": "Completion certificate",
     },
 
     "Certificate 6": {
       "name": "Certificate 4",
-      "price": 80.0,
+      "mrp": 80.0,
+      "discount": 27,
       "image": "assets/image/Certification6.jpeg",
       "description": "Completion certificate",
     },
@@ -257,14 +285,16 @@ class ProductData {
     /// ================= ID CARD =================
     "Id Card 1": {
       "name": "Id Card 1",
-      "price": 100.0,
+      "mrp": 100.0,
+      "discount": 27,
       "image": "assets/image/IdCard1.jpeg",
       "description": "School ID card",
     },
 
     "Id Card 2": {
       "name": "Id Card 2",
-      "price": 100.0,
+      "mrp": 100.0,
+      "discount": 27,
       "image": "assets/image/IdCard2.jpeg",
       "description": "Student ID card",
     },
@@ -272,7 +302,8 @@ class ProductData {
     /// ================= MEDALS =================
     "Gold Silver Bronze": {
       "name": "Medals Set",
-      "price": 150.0,
+      "mrp": 150.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "Gold, Silver, Bronze medals",
     },
@@ -280,21 +311,24 @@ class ProductData {
     /// ================= NOTEBOOK =================
     "Notebook 1": {
       "name": "Notebook 1",
-      "price": 120.0,
+      "mrp": 120.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "Student notebook",
     },
 
     "Notebook 2": {
       "name": "Notebook 2",
-      "price": 140.0,
+      "mrp": 140.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "High quality notebook",
     },
 
     "Notebook 3": {
       "name": "Notebook 3",
-      "price": 160.0,
+      "mrp": 160.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "High quality thick notebook",
     },
@@ -303,28 +337,32 @@ class ProductData {
     /// ================= PROGRESS CARD =================
     "Progress Card 1": {
       "name": "Progress Card 1",
-      "price": 80.0,
+      "mrp": 80.0,
+      "discount": 27,
       "image": "assets/image/ProgressCard1.jpeg",
       "description": "Student progress card",
     },
 
     "Progress Card 2": {
       "name": "Progress Card 2",
-      "price": 80.0,
+      "mrp": 80.0,
+      "discount": 27,
       "image": "assets/image/ProgressCard2.jpeg",
       "description": "School progress card",
     },
 
     "Progress Card 3": {
       "name": "Progress Card 3",
-      "price": 80.0,
+      "mrp": 80.0,
+      "discount": 27,
       "image": "assets/image/ProgressCard3.jpeg",
       "description": "Student yearly progress card",
     },
 
     "Progress Card 4": {
       "name": "Progress Card 4",
-      "price": 80.0,
+      "mrp": 80.0,
+      "discount": 27,
       "image": "assets/image/ProgressCard4.jpeg",
       "description": "Detailed academic progress card",
     },
@@ -332,14 +370,16 @@ class ProductData {
     /// ================= UNIFORM =================
     "Uniform 1": {
       "name": "Uniform 1",
-      "price": 499.0,
+      "mrp": 499.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "School uniform set",
     },
 
     "Uniform 2": {
       "name": "Uniform 2",
-      "price": 549.0,
+      "mrp": 549.0,
+      "discount": 27,
       "image": "assets/image/sakshi.png",
       "description": "Premium school uniform",
     },

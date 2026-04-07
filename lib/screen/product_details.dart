@@ -29,16 +29,31 @@ class ProductDetailsPage extends StatelessWidget {
       );
     }
 
-    /// CREATE PRODUCT MODEL
+    /// CREATE PRODUCT
+
+    final mrp = productMap['mrp'] ?? 0.0;
+    final discount = productMap['discount'] ?? 0;
+
+    double finalPrice = mrp - (mrp * discount / 100);
+
     final product = Product(
       id: productId,
       name: productMap['name'],
-      price: productMap['price'],
+      price: finalPrice, // ✅ now dynamic price
       image: productMap['image'],
     );
 
     final description = productMap['description'] ?? "";
-    final oldPrice = productMap['oldPrice'];
+
+    // final product = Product(
+    //   id: productId,
+    //   name: productMap['name'],
+    //   price: productMap['price'],
+    //   image: productMap['image'],
+    // );
+    //
+    // final description = productMap['description'] ?? "";
+    // final oldPrice = productMap['oldPrice'];
 
     /// GRAB PDFs LIST (null if product has no PDFs e.g. bags, certificates)
     final List<Map<String, String>>? pdfs = productMap['pdfs'] != null
@@ -100,19 +115,35 @@ class ProductDetailsPage extends StatelessWidget {
             const SizedBox(height: 16),
 
             /// PRICE ROW
-            Row(
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (oldPrice != null)
-                  Text(
-                    "₹$oldPrice",
-                    style: const TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      color: Colors.grey,
+
+                Row(
+                  children: [
+                    Text(
+                      "-$discount%",
+                      style: const TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                const SizedBox(width: 10),
+                    const SizedBox(width: 8),
+                    Text(
+                      "₹$mrp",
+                      style: const TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 5),
+
                 Text(
-                  "₹${product.price}",
+                  "₹${finalPrice.toStringAsFixed(0)}",
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -121,6 +152,30 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
               ],
             ),
+
+
+
+            // Row(
+            //   children: [
+            //     if (oldPrice != null)
+            //       Text(
+            //         "₹$oldPrice",
+            //         style: const TextStyle(
+            //           decoration: TextDecoration.lineThrough,
+            //           color: Colors.grey,
+            //         ),
+            //       ),
+            //     const SizedBox(width: 10),
+            //     Text(
+            //       "₹${product.price}",
+            //       style: const TextStyle(
+            //         fontSize: 22,
+            //         fontWeight: FontWeight.bold,
+            //         color: Colors.green,
+            //       ),
+            //     ),
+            //   ],
+            // ),
 
             const SizedBox(height: 12),
 

@@ -104,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   scrollDirection: Axis.horizontal,
                   children: [
                     _buildCategory(Icons.book, "Books"),
+                    // _buildCategory(Icons.school, "Papers"),
                     _buildCategory(Icons.school, "Papers"),
                     _buildCategory(Icons.menu_book, "Bag"),
                     _buildCategory(Icons.video_library, "Uniform"),
