@@ -22,6 +22,11 @@ class _OrdersPageState extends State<OrdersPage>
   @override
   void initState() {
     super.initState();
+
+    final u = Supabase.instance.client.auth.currentUser;
+    print("=== USER: $u");
+    print("=== USER ID: ${u?.id}");
+
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) return;

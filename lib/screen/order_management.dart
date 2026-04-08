@@ -30,17 +30,39 @@ class _OrderScreenState extends State<OrderScreen>
     super.dispose();
   }
 
+  // Future fetchOrders() async {
+  //   setState(() => loading = true);
+  //   final response = await supabase
+  //       .from('orders')
+  //       .select('*, order_items(*)')
+  //       .order('created_at', ascending: false);
+  //
+  //   setState(() {
+  //     orders = response;
+  //     loading = false;
+  //   });
+  // }
+
+
   Future fetchOrders() async {
     setState(() => loading = true);
-    final response = await supabase
-        .from('orders')
-        .select('*, order_items(*)')
-        .order('created_at', ascending: false);
+    try {
+      final response = await supabase
+          .from('orders')
+          .select('*, order_items(*)')
+          .order('created_at', ascending: false);
 
-    setState(() {
-      orders = response;
-      loading = false;
-    });
+      print('✅ Orders fetched: ${response.length}');
+      print('✅ Data: $response');
+
+      setState(() {
+        orders = response;
+        loading = false;
+      });
+    } catch (e) {
+      print('❌ Error fetching orders: $e');
+      setState(() => loading = false);
+    }
   }
 
   List get pendingOrders =>
