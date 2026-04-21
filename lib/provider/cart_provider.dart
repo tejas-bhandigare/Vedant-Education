@@ -63,6 +63,15 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setQty(String id, int qty) {
+    final index = _items.indexWhere((e) => e.product.id == id);
+    if (index != -1) {
+      _items[index].quantity = qty;
+      saveCart();
+      notifyListeners();
+    }
+  }
+
   // ✅ TOTAL
   double get totalPrice {
     double total = 0;
