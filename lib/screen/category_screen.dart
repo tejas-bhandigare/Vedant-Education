@@ -50,7 +50,6 @@ class _CategoryPageState extends State<CategoryPage> {
     "Medals",
     "Notebooks",
     "Progress Card",
-    "Results",
     "Papers",
     "Uniform",
   ];
@@ -562,7 +561,7 @@ class _CategoryPageState extends State<CategoryPage> {
         Row(children: [
           ContentBox(
             title: "Gold Silver Bronze",
-            imagePath: "assets/image/sakshi.png",
+            imagePath: "assets/image/medals.jpg",
             onTap: () => openProduct("Gold Silver Bronze"),
           ),
           const Spacer(),
@@ -758,12 +757,12 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               ContentBox(
                 title: "Uniform 1",
-                imagePath: "assets/image/sakshi.png",
+                imagePath: "assets/image/uniform1.jpg",
                 onTap: () => openProduct("Uniform 1"),
               ),
               ContentBox(
                 title: "Uniform 2",
-                imagePath: "assets/image/sakshi.png",
+                imagePath: "assets/image/uniform4.jpg",
                 onTap: () => openProduct("Uniform 2"),
               ),
             ],
@@ -773,12 +772,12 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               ContentBox(
                 title: "Uniform 3",
-                imagePath: "assets/image/sakshi.png",
+                imagePath: "assets/image/uniform3.jpg",
                 onTap: () => openProduct("Uniform 3"),
               ),
               ContentBox(
                 title: "Uniform 4",
-                imagePath: "assets/image/sakshi.png",
+                imagePath: "assets/image/uniform4.jpg",
                 onTap: () => openProduct("Uniform 4"),
               ),
             ],
@@ -788,7 +787,7 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               ContentBox(
                 title: "Uniform 5",
-                imagePath: "assets/image/sakshi.png",
+                imagePath: "assets/image/uniform1.jpg",
                 onTap: () => openProduct("Uniform 5"),
               ),
               const Spacer(),

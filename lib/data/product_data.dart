@@ -304,7 +304,7 @@ class ProductData {
       "name": "Medals Set",
       "mrp": 150.0,
       "discount": 27,
-      "image": "assets/image/sakshi.png",
+      "image": "assets/image/medals.jpg",
       "description": "Gold, Silver, Bronze medals",
     },
 
@@ -372,7 +372,7 @@ class ProductData {
       "name": "Uniform 1",
       "mrp": 499.0,
       "discount": 27,
-      "image": "assets/image/sakshi.png",
+      "image": "assets/image/uniform1.jpg",
       "description": "School uniform set",
     },
 
@@ -380,10 +380,33 @@ class ProductData {
       "name": "Uniform 2",
       "mrp": 549.0,
       "discount": 27,
-      "image": "assets/image/sakshi.png",
+      "image": "assets/image/uniform4.jpg",
       "description": "Premium school uniform",
     },
 
+    "Uniform 3": {
+      "name": "Uniform 2",
+      "mrp": 549.0,
+      "discount": 27,
+      "image": "assets/image/uniform3.jpg",
+      "description": "Premium school uniform",
+    },
+
+    "Uniform 4": {
+      "name": "Uniform 2",
+      "mrp": 549.0,
+      "discount": 27,
+      "image": "assets/image/uniform4.jpg",
+      "description": "Premium school uniform",
+    },
+
+    "Uniform 5": {
+      "name": "Uniform 2",
+      "mrp": 549.0,
+      "discount": 27,
+      "image": "assets/image/uniform1.jpg",
+      "description": "Premium school uniform",
+    },
   };
 
 }
