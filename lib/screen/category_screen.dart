@@ -251,25 +251,25 @@ class _CategoryPageState extends State<CategoryPage> {
           Row(children: [
             ContentBox(
               title: "Bag 5",
-              imagePath: "assets/image/Bag4.jpeg",
+              imagePath: "assets/image/bag5.jpg",
               onTap: () =>
                   openBag(
                     id: "bag5",
                     name: "Senior School Bag",
                     price: 1050,
-                    image: "assets/image/Bag4.jpeg",
+                    image: "assets/image/bag5.jpg",
                     description: "Large capacity senior school bag for books and notebooks.",
                   ),
             ),
             ContentBox(
               title: "Bag 6",
-              imagePath: "assets/image/Bag4.jpeg",
+              imagePath: "assets/image/bag6.jpg",
               onTap: () =>
                   openBag(
                     id: "bag6",
                     name: "Waterproof School Bag",
                     price: 1100,
-                    image: "assets/image/Bag4.jpeg",
+                    image: "assets/image/bag6.jpg",
                     description: "Waterproof school bag to protect books from rain.",
                   ),
             ),
@@ -277,25 +277,25 @@ class _CategoryPageState extends State<CategoryPage> {
           Row(children: [
             ContentBox(
               title: "Bag 7",
-              imagePath: "assets/image/Bag4.jpeg",
+              imagePath: "assets/image/bag7.jpg",
               onTap: () =>
                   openBag(
                     id: "bag7",
                     name: "Lightweight School Bag",
                     price: 950,
-                    image: "assets/image/Bag4.jpeg",
+                    image: "assets/image/bag7.jpg",
                     description: "Lightweight and comfortable bag for daily school use.",
                   ),
             ),
             ContentBox(
               title: "Bag 8",
-              imagePath: "assets/image/Bag4.jpeg",
+              imagePath: "assets/image/bag8.jpg",
               onTap: () =>
                   openBag(
                     id: "bag8",
                     name: "Multi Pocket Bag",
                     price: 1200,
-                    image: "assets/image/Bag4.jpeg",
+                    image: "assets/image/bag8.jpg",
                     description: "Multi pocket bag for organizing books and accessories.",
                   ),
             ),
@@ -303,13 +303,13 @@ class _CategoryPageState extends State<CategoryPage> {
           Row(children: [
             ContentBox(
               title: "Bag 9",
-              imagePath: "assets/image/Bag4.jpeg",
+              imagePath: "assets/image/bag9.jpg",
               onTap: () =>
                   openBag(
                     id: "bag9",
                     name: "Premium School Bag",
                     price: 1350,
-                    image: "assets/image/Bag4.jpeg",
+                    image: "assets/image/bag9.jpg",
                     description: "Premium quality school bag with strong material.",
                   ),
             ),
@@ -580,12 +580,12 @@ class _CategoryPageState extends State<CategoryPage> {
         Row(children: [
           ContentBox(
             title: "Notebook 1",
-            imagePath: "assets/image/sakshi.png",
+            imagePath: "assets/image/notebook1.jpg",
             onTap: () => openProduct("Notebook 1"),
           ),
           ContentBox(
             title: "Notebook 2",
-            imagePath: "assets/image/sakshi.png",
+            imagePath: "assets/image/note book2.jpg",
             onTap: () => openProduct("Notebook 2"),
           ),
         ]),
@@ -593,7 +593,7 @@ class _CategoryPageState extends State<CategoryPage> {
         Row(children: [
           ContentBox(
             title: "Notebook 3",
-            imagePath: "assets/image/sakshi.png",
+            imagePath: "assets/image/notebook3.jpg",
             onTap: () => openProduct("Notebook 3"),
           ),
           const Spacer(),

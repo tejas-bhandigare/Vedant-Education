@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vedant_education_app/screen/category_screen.dart';
 import '../auth/auth_gate.dart';
 import '../service/order_service.dart';
+import 'DefectiveProduct.dart';
 import 'cart_screen.dart';
 import 'contact_us.dart';
 import 'home.dart';
@@ -394,8 +395,20 @@ class _AccountPageState extends State<AccountPage> {
                 _ActionItem(
                   icon: Icons.warning,
                   text: "Defective Product",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DefectiveProductScreen(),
+                      ),
+                    );
+                  },
                 ),
+                // _ActionItem(
+                //   icon: Icons.warning,
+                //   text: "Defective Product",
+                //   onTap: () {},
+                // ),
                 _ActionItem(
                   icon: Icons.help_outline,
                   text: "Help Us",
@@ -472,6 +485,9 @@ class _AccountPageState extends State<AccountPage> {
     feedbackCtrl.dispose();
     super.dispose();
   }
+}
+
+class DefectiveProduct {
 }
 
 // ─── Action Item ──────────────────────────────────────────────────────────────
