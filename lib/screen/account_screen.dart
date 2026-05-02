@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vedant_education_app/screen/category_screen.dart';
 import '../auth/auth_gate.dart';
@@ -131,97 +132,468 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   // ─── Feedback dialog ──────────────────────────────────────────────────────
+
   void _openFeedbackDialog() {
-    showDialog(
+    showGeneralDialog(
       context: context,
-      builder: (context) {
+      barrierDismissible: true,
+      barrierLabel: "Feedback",
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 350),
+      transitionBuilder: (ctx, anim, _, child) {
+        final curve = CurvedAnimation(parent: anim, curve: Curves.easeOutBack);
+        return ScaleTransition(
+          scale: Tween<double>(begin: 0.88, end: 1.0).animate(curve),
+          child: FadeTransition(opacity: anim, child: child),
+        );
+      },
+      pageBuilder: (ctx, _, __) {
+        double localRating = rating;
+        bool submitted = false;
+        final List<String> tags = ["Quality", "Delivery", "Packaging", "Value", "Support"];
+        final Set<String> selectedTags = {};
+
         return StatefulBuilder(
           builder: (context, setDialogState) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Rate Us"),
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
+            return Center(
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 40,
+                        offset: const Offset(0, 16),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(5, (index) {
-                        return GestureDetector(
-                          onTap: () =>
-                              setDialogState(() => rating = index + 1.0),
-                          child: Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 4),
-                            child: Icon(
-                              Icons.star,
-                              size: 28,
-                              color:
-                              index < rating ? Colors.amber : Colors.grey,
-                            ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 350),
+                      child: submitted
+
+                      // ── Success state ──────────────────────────
+                          ? SizedBox(
+                        key: const ValueKey('success'),
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 72, height: 72,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF22C55E).withOpacity(0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(Icons.check_rounded,
+                                    color: Color(0xFF22C55E), size: 40),
+                              ),
+                              const SizedBox(height: 20),
+                              const Text("Thank you! 🎉",
+                                  style: TextStyle(fontSize: 22,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black87)),
+                              const SizedBox(height: 8),
+                              Text("Your feedback helps us improve.",
+                                  style: TextStyle(fontSize: 14,
+                                      color: Colors.grey.shade500)),
+                            ],
                           ),
-                        );
-                      }),
-                    ),
-                    const SizedBox(height: 15),
-                    TextField(
-                      controller: feedbackCtrl,
-                      maxLines: 4,
-                      decoration: const InputDecoration(
-                        hintText: "Write your feedback...",
-                        border: OutlineInputBorder(),
+                        ),
+                      )
+
+                      // ── Form state ─────────────────────────────
+                          : SingleChildScrollView(
+                        key: const ValueKey('form'),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                            // Header
+                            Container(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
+                                ),
+                              ),
+                              padding: const EdgeInsets.fromLTRB(20, 20, 12, 20),
+                              child: Row(
+                                children: [
+                                  const Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Rate Your Experience",
+                                            style: TextStyle(fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white)),
+                                        SizedBox(height: 2),
+                                        Text("Your opinion matters to us",
+                                            style: TextStyle(fontSize: 12,
+                                                color: Colors.white70)),
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.close_rounded,
+                                        color: Colors.white70, size: 22),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+
+                                  // Stars
+                                  Center(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: List.generate(5, (i) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                HapticFeedback.lightImpact();
+                                                setDialogState(() {
+                                                  localRating = i + 1.0;
+                                                  rating = localRating;
+                                                });
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                                child: AnimatedSwitcher(
+                                                  duration: const Duration(milliseconds: 200),
+                                                  transitionBuilder: (child, anim) =>
+                                                      ScaleTransition(scale: anim, child: child),
+                                                  child: Icon(
+                                                    i < localRating
+                                                        ? Icons.star_rounded
+                                                        : Icons.star_border_rounded,
+                                                    key: ValueKey(i < localRating),
+                                                    size: 38,
+                                                    color: i < localRating
+                                                        ? const Color(0xFFFBBF24)
+                                                        : Colors.grey.shade300,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        AnimatedSwitcher(
+                                          duration: const Duration(milliseconds: 200),
+                                          child: Text(
+                                            localRating == 0 ? "Tap to rate"
+                                                : localRating == 1 ? "Poor 😞"
+                                                : localRating == 2 ? "Fair 😐"
+                                                : localRating == 3 ? "Good 🙂"
+                                                : localRating == 4 ? "Great 😄"
+                                                : "Excellent! 🤩",
+                                            key: ValueKey(localRating),
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                              color: localRating == 0
+                                                  ? Colors.grey.shade400
+                                                  : const Color(0xFF4F46E5),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 22),
+
+                                  // Tags
+                                  Text("What stood out?",
+                                      style: TextStyle(fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.grey.shade700)),
+                                  const SizedBox(height: 10),
+                                  Wrap(
+                                    spacing: 8, runSpacing: 8,
+                                    children: tags.map((tag) {
+                                      final selected = selectedTags.contains(tag);
+                                      return GestureDetector(
+                                        onTap: () {
+                                          HapticFeedback.selectionClick();
+                                          setDialogState(() => selected
+                                              ? selectedTags.remove(tag)
+                                              : selectedTags.add(tag));
+                                        },
+                                        child: AnimatedContainer(
+                                          duration: const Duration(milliseconds: 180),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 14, vertical: 7),
+                                          decoration: BoxDecoration(
+                                            color: selected
+                                                ? const Color(0xFF4F46E5).withOpacity(0.1)
+                                                : Colors.grey.shade100,
+                                            borderRadius: BorderRadius.circular(30),
+                                            border: Border.all(
+                                              color: selected
+                                                  ? const Color(0xFF4F46E5)
+                                                  : Colors.grey.shade200,
+                                              width: selected ? 1.5 : 1,
+                                            ),
+                                          ),
+                                          child: Text(tag,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: selected
+                                                    ? const Color(0xFF4F46E5)
+                                                    : Colors.grey.shade600,
+                                              )),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+
+                                  const SizedBox(height: 22),
+
+                                  // Text field
+                                  Text("Tell us more (optional)",
+                                      style: TextStyle(fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.grey.shade700)),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                    controller: feedbackCtrl,
+                                    maxLines: 3,
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: InputDecoration(
+                                      hintText: "What can we do better?",
+                                      hintStyle: TextStyle(
+                                          color: Colors.grey.shade400, fontSize: 13),
+                                      filled: true,
+                                      fillColor: Colors.grey.shade50,
+                                      contentPadding: const EdgeInsets.all(14),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(color: Colors.grey.shade200),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(color: Colors.grey.shade200),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF4F46E5), width: 1.5),
+                                      ),
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 24),
+
+                                  // Buttons
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          style: TextButton.styleFrom(
+                                            padding: const EdgeInsets.symmetric(vertical: 14),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(12),
+                                              side: BorderSide(color: Colors.grey.shade200),
+                                            ),
+                                          ),
+                                          child: Text("Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.grey.shade500,
+                                                  fontWeight: FontWeight.w500)),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        flex: 2,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            if (localRating == 0 &&
+                                                feedbackCtrl.text.trim().isEmpty) {
+                                              HapticFeedback.mediumImpact();
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: const Text(
+                                                      "Please give a rating or write feedback"),
+                                                  backgroundColor: Colors.red.shade400,
+                                                  behavior: SnackBarBehavior.floating,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(10)),
+                                                ),
+                                              );
+                                              return;
+                                            }
+                                            setDialogState(() => submitted = true);
+                                            Future.delayed(
+                                              const Duration(milliseconds: 1800),
+                                                  () {
+                                                if (context.mounted) {
+                                                  Navigator.pop(context);
+                                                  feedbackCtrl.clear();
+                                                  rating = 0;
+                                                }
+                                              },
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: const Color(0xFF4F46E5),
+                                            foregroundColor: Colors.white,
+                                            elevation: 0,
+                                            padding: const EdgeInsets.symmetric(vertical: 14),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(12)),
+                                          ),
+                                          child: const Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.send_rounded, size: 16),
+                                              SizedBox(width: 8),
+                                              Text("Submit",
+                                                  style: TextStyle(fontWeight: FontWeight.w600)),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("Cancel"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (rating == 0 && feedbackCtrl.text.trim().isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Please give rating or feedback"),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                      return;
-                    }
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Feedback submitted successfully"),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    feedbackCtrl.clear();
-                    rating = 0;
-                  },
-                  child: const Text("Submit"),
-                ),
-              ],
             );
           },
         );
       },
     );
   }
+
+
+
+
+
+
+
+  // void _openFeedbackDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return StatefulBuilder(
+  //         builder: (context, setDialogState) {
+  //           return AlertDialog(
+  //             shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.circular(16)),
+  //             title: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 const Text("Rate Us"),
+  //                 IconButton(
+  //                   padding: EdgeInsets.zero,
+  //                   constraints: const BoxConstraints(),
+  //                   icon: const Icon(Icons.close),
+  //                   onPressed: () => Navigator.pop(context),
+  //                 ),
+  //               ],
+  //             ),
+  //             content: SingleChildScrollView(
+  //               child: Column(
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: [
+  //                   Row(
+  //                     mainAxisAlignment: MainAxisAlignment.center,
+  //                     children: List.generate(5, (index) {
+  //                       return GestureDetector(
+  //                         onTap: () =>
+  //                             setDialogState(() => rating = index + 1.0),
+  //                         child: Padding(
+  //                           padding:
+  //                           const EdgeInsets.symmetric(horizontal: 4),
+  //                           child: Icon(
+  //                             Icons.star,
+  //                             size: 28,
+  //                             color:
+  //                             index < rating ? Colors.amber : Colors.grey,
+  //                           ),
+  //                         ),
+  //                       );
+  //                     }),
+  //                   ),
+  //                   const SizedBox(height: 15),
+  //                   TextField(
+  //                     controller: feedbackCtrl,
+  //                     maxLines: 4,
+  //                     decoration: const InputDecoration(
+  //                       hintText: "Write your feedback...",
+  //                       border: OutlineInputBorder(),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             actions: [
+  //               TextButton(
+  //                 onPressed: () => Navigator.pop(context),
+  //                 child: const Text("Cancel"),
+  //               ),
+  //               ElevatedButton(
+  //                 onPressed: () {
+  //                   if (rating == 0 && feedbackCtrl.text.trim().isEmpty) {
+  //                     ScaffoldMessenger.of(context).showSnackBar(
+  //                       const SnackBar(
+  //                         content: Text("Please give rating or feedback"),
+  //                         backgroundColor: Colors.red,
+  //                       ),
+  //                     );
+  //                     return;
+  //                   }
+  //                   Navigator.pop(context);
+  //                   ScaffoldMessenger.of(context).showSnackBar(
+  //                     const SnackBar(
+  //                       content: Text("Feedback submitted successfully"),
+  //                       backgroundColor: Colors.green,
+  //                     ),
+  //                   );
+  //                   feedbackCtrl.clear();
+  //                   rating = 0;
+  //                 },
+  //                 child: const Text("Submit"),
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
+  //
+  //
+
+
+
+
 
   // ─── Edit profile dialog ──────────────────────────────────────────────────
   void _openEditDialog() {

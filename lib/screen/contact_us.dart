@@ -41,7 +41,7 @@ class ContactUsPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   image: const DecorationImage(
-                    image: AssetImage('assets/img/Contact_us.jpeg'),
+                    image: AssetImage('assets/image/CONTACTUS.jpeg'),
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -78,6 +78,8 @@ flutter:
      - assets/pdfs/senior_merged/
      - assets/pdfs/senior_subject/
      - assets/pdfs/senior_worksheet/
+     - assets/pdfs/gujarati/
+     - assets/pdfs/english_cursive_levels/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
