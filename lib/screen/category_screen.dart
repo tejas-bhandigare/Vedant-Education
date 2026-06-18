@@ -10,8 +10,13 @@ import 'home.dart';
 class CategoryPage extends StatefulWidget {
 
   final String? categoryName;
+  final String? searchQuery;   // ← NEW: passed from HomeScreen search
 
-  const CategoryPage({super.key, this.categoryName});
+  const CategoryPage({
+    super.key,
+    this.categoryName,
+    this.searchQuery,
+  });
 
   @override
   State<CategoryPage> createState() => _CategoryPageState();
@@ -20,26 +25,6 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   int _selectedIndex = 1;
   int selectedCategoryIndex = 0;
-
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.categoryName != null) {
-      String category = widget.categoryName!;
-
-      if (category == "Papers") {
-        category = "Papers";
-      }
-
-      int index = categories.indexOf(category);
-
-      if (index != -1) {
-        selectedCategoryIndex = index;
-      }
-    }
-  }
 
   final List<String> categories = [
     "Bag",
@@ -52,6 +37,18 @@ class _CategoryPageState extends State<CategoryPage> {
     "Papers",
     "Uniform",
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.categoryName != null) {
+      final index = categories.indexOf(widget.categoryName!);
+      if (index != -1) {
+        selectedCategoryIndex = index;
+      }
+    }
+  }
 
   /// ================= BOTTOM NAVIGATION =================
   void _onItemTapped(int index) {
@@ -83,42 +80,91 @@ class _CategoryPageState extends State<CategoryPage> {
         centerTitle: true,
       ),
 
-      body: Row(
+      body: Column(
         children: [
 
-          /// ===== LEFT CATEGORY LIST =====
-          Container(
-            width: 120,
-            color: Colors.blue.shade50,
-            child: ListView.builder(
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () => setState(() => selectedCategoryIndex = index),
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    color: selectedCategoryIndex == index
-                        ? Colors.white
-                        : Colors.blue.shade50,
+          // ── SEARCH RESULT BANNER ──────────────────────────────────────────
+          // Shown only when the user arrived via a search query.
+          if (widget.searchQuery != null && widget.searchQuery!.isNotEmpty)
+            Container(
+              width: double.infinity,
+              color: Colors.blue.shade50,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Row(
+                children: [
+                  const Icon(Icons.search, size: 18, color: Colors.blue),
+                  const SizedBox(width: 8),
+                  Expanded(
                     child: Text(
-                      categories[index],
-                      style: TextStyle(
-                        fontWeight: selectedCategoryIndex == index
-                            ? FontWeight.bold
-                            : FontWeight.normal,
+                      'Showing results for  "${widget.searchQuery}"  in  '
+                          '"${categories[selectedCategoryIndex]}"',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                );
-              },
+                  // Tap × to clear the banner and browse normally
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CategoryPage(
+                            categoryName: categories[selectedCategoryIndex],
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Icon(Icons.close, size: 18, color: Colors.blue),
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          /// ===== RIGHT CONTENT =====
+          // ── MAIN BODY (sidebar + content) ────────────────────────────────
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: rightContent(),
+            child: Row(
+              children: [
+
+                /// ===== LEFT CATEGORY LIST =====
+                Container(
+                  width: 120,
+                  color: Colors.blue.shade50,
+                  child: ListView.builder(
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final isSelected = selectedCategoryIndex == index;
+                      return InkWell(
+                        onTap: () => setState(() => selectedCategoryIndex = index),
+                        child: Container(
+                          padding: const EdgeInsets.all(15),
+                          color: isSelected
+                              ? Colors.white
+                              : Colors.blue.shade50,
+                          child: Text(
+                            categories[index],
+                            style: TextStyle(
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                /// ===== RIGHT CONTENT =====
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    child: rightContent(),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -133,11 +179,9 @@ class _CategoryPageState extends State<CategoryPage> {
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.grid_view), label: 'Category'),
+          BottomNavigationBarItem(icon: Icon(Icons.grid_view), label: 'Category'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: 'Cart'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
         ],
       ),
     );
@@ -148,30 +192,18 @@ class _CategoryPageState extends State<CategoryPage> {
     final selected = categories[selectedCategoryIndex];
 
     switch (selected) {
-      case "Bag":
-        return bagUI();
-      case "Books":
-        return booksUI();
-      case "Certificate":
-        return certificateUI();
-      case "Id Card":
-        return idCardUI();
-      case "Medals":
-        return medalsUI();
-      case "Notebooks":
-        return notebooksUI();
-      case "Progress Card":
-        return progressCardUI();
-      case "Papers":
-        return samplePapersUI();
-      case "Uniform":
-        return uniformsUI();
+      case "Bag":        return bagUI();
+      case "Books":      return booksUI();
+      case "Certificate": return certificateUI();
+      case "Id Card":    return idCardUI();
+      case "Medals":     return medalsUI();
+      case "Notebooks":  return notebooksUI();
+      case "Progress Card": return progressCardUI();
+      case "Papers":     return samplePapersUI();
+      case "Uniform":    return uniformsUI();
       default:
         return Center(
-          child: Text(
-            selected,
-            style: const TextStyle(fontSize: 18),
-          ),
+          child: Text(selected, style: const TextStyle(fontSize: 18)),
         );
     }
   }
@@ -298,11 +330,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-
   /// ================= BOOKS UI =================
-  /// Original grid layout — unchanged.
-  /// 4 specific items open BookSubCategoryScreen instead of ProductDetailsPage.
-
   Widget booksUI() {
     return SingleChildScrollView(
       child: Column(
@@ -335,33 +363,68 @@ class _CategoryPageState extends State<CategoryPage> {
             ContentBox(
               title: "Subject Wise",
               imagePath: "assets/image/Nursery.jpeg",
-              // ✅ Opens sub-category list → 4 items
               onTap: () => openSubCategory("Nursery Subject Wise"),
             ),
           ]),
 
           /// JUNIOR
           const SectionTitle("Junior"),
-          Row(children: [
-            ContentBox(
-              title: "Merged Books",
-              imagePath: "assets/image/JuniorKgEnglish.jpeg",
-              onTap: () => openBook("Junior Merged Books"),
-            ),
-            ContentBox(
-              title: "Subject Wise",
-              imagePath: "assets/image/JuniorKgEnglish.jpeg",
-              // ✅ Opens sub-category list → 2 items
-              onTap: () => openSubCategory("Junior Subject Wise"),
-            ),
 
-            // ContentBox(
-            //   title: "Subject Wise",
-            //   imagePath: "assets/image/JuniorKgEnglish.jpeg",
-            //   // ✅ Opens sub-category list → 2 items
-            //   onTap: () => openSubCategory("Junior Subject Wise"),
-            // ),
-          ]),
+
+          Column(
+            children: [
+              // Row 1: Two content boxes
+              Row(
+                children: [
+                  Expanded(
+                    child: ContentBox(
+                      title: "Merged Books",
+                      imagePath: "assets/image/JuniorKgEnglish.jpeg",
+                      onTap: () => openBook("Junior Merged Books"),
+                    ),
+                  ),
+                  Expanded(
+                    child: ContentBox(
+                      title: "Subject Wise",
+                      imagePath: "assets/image/JuniorKgEnglish.jpeg",
+                      onTap: () => openSubCategory("Junior Subject Wise"),
+                    ),
+                  ),
+                ],
+              ),
+
+              // Row 2: Single content box
+              Row(
+                children: [
+                  Expanded(
+                    child: ContentBox(
+                      title: "अ से ज्ञ",
+                      imagePath: "assets/image/JuniorKgEnglish.jpeg",
+                      onTap: () => openSubCategory("Junior Subject Wise"),
+                    ),
+                  ),
+                  Expanded(child: SizedBox()), // Empty space to keep alignment
+                ],
+              ),
+            ],
+          ),
+          // Row(children: [
+          //   ContentBox(
+          //     title: "Merged Books",
+          //     imagePath: "assets/image/JuniorKgEnglish.jpeg",
+          //     onTap: () => openBook("Junior Merged Books"),
+          //   ),
+          //   ContentBox(
+          //     title: "Subject Wise",
+          //     imagePath: "assets/image/JuniorKgEnglish.jpeg",
+          //     onTap: () => openSubCategory("Junior Subject Wise"),
+          //   ),
+          //   ContentBox(
+          //     title: "अ से ज्ञ ",
+          //     imagePath: "assets/image/JuniorKgEnglish.jpeg",
+          //     onTap: () => openSubCategory("Junior Subject Wise"),
+          //   ),
+          // ]),
 
           /// SENIOR
           const SectionTitle("Senior"),
@@ -369,32 +432,21 @@ class _CategoryPageState extends State<CategoryPage> {
             ContentBox(
               title: "Subject Wise",
               imagePath: "assets/image/seniorkgsubjectwise.jpeg",
-              // ✅ Opens sub-category list → 3 items
               onTap: () => openSubCategory("Senior Subject Wise"),
             ),
             ContentBox(
               title: "Merged Books",
               imagePath: "assets/image/seniorkgmergebook5.jpeg",
-              // ✅ Opens sub-category list → 2 items
               onTap: () => openSubCategory("Senior Merged Books"),
             ),
           ]),
-
-          // Row(children: [
-          //   ContentBox(
-          //     title: "KG Worksheet",
-          //     imagePath: "assets/image/sakshi.png",
-          //     onTap: () => openBook("Senior KG Worksheet"),
-          //   ),
-          //   const Spacer(),
-          // ]),
 
           /// ENGLISH CURSIVE
           const SectionTitle("English Cursive"),
           Row(children: [
             ContentBox(
               title: "Cursive Level 1",
-              imagePath: "assets/image/englishlevel1.jpeg",
+              imagePath: "assets/image/englishlevel1.jpeg", 
               onTap: () => openBook("English Cursive Level 1"),
             ),
             ContentBox(
@@ -404,7 +456,7 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           ]),
 
-          /// MARATHI
+          /// GUJARATI
           const SectionTitle("ગુજરાતી भाषा"),
           Row(children: [
             ContentBox(
@@ -418,58 +470,12 @@ class _CategoryPageState extends State<CategoryPage> {
               onTap: () => openBook("ગુજરાતી Junior Kg Book"),
             ),
           ]),
-
         ],
       ),
     );
   }
 
-
-  /// Opens sub-category list screen for books with multiple sub-items
-  void openSubCategory(String groupId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BookSubCategoryScreen(groupId: groupId),
-      ),
-    );
-  }
-
-  /// Opens product details directly
-  void openBook(String title) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ProductDetailsPage(productId: title),
-      ),
-    );
-  }
-
-  void openBag({
-    required String id,
-    required String name,
-    required int price,
-    required String image,
-    required String description,
-  }) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ProductDetailsPage(productId: id),
-      ),
-    );
-  }
-
-  void openProduct(String id) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ProductDetailsPage(productId: id),
-      ),
-    );
-  }
-
-
+  /// ================= CERTIFICATE UI =================
   Widget certificateUI() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -515,7 +521,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-
+  /// ================= ID CARD UI =================
   Widget idCardUI() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -537,7 +543,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-
+  /// ================= MEDALS UI =================
   Widget medalsUI() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -555,7 +561,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-
+  /// ================= NOTEBOOKS UI =================
   Widget notebooksUI() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -585,7 +591,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-
+  /// ================= PROGRESS CARD UI =================
   Widget progressCardUI() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -619,7 +625,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-
+  /// ================= SAMPLE PAPERS UI =================
   Widget samplePapersUI() {
     Widget clickableItem(String title) {
       return ListTile(
@@ -655,7 +661,6 @@ class _CategoryPageState extends State<CategoryPage> {
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           const SectionTitle("Sample Papers"),
@@ -668,7 +673,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-
+  /// ================= UNIFORMS UI =================
   Widget uniformsUI() {
     return SingleChildScrollView(
       child: Column(
@@ -711,8 +716,50 @@ class _CategoryPageState extends State<CategoryPage> {
       ),
     );
   }
-}
 
+  /// ================= HELPERS =================
+  void openSubCategory(String groupId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BookSubCategoryScreen(groupId: groupId),
+      ),
+    );
+  }
+
+  void openBook(String title) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ProductDetailsPage(productId: title),
+      ),
+    );
+  }
+
+  void openBag({
+    required String id,
+    required String name,
+    required int price,
+    required String image,
+    required String description,
+  }) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ProductDetailsPage(productId: id),
+      ),
+    );
+  }
+
+  void openProduct(String id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ProductDetailsPage(productId: id),
+      ),
+    );
+  }
+}
 
 
 /// ================= SECTION TITLE =================
@@ -783,3 +830,788 @@ class ContentBox extends StatelessWidget {
 
 
 
+// import 'package:flutter/material.dart';
+// import 'package:vedant_education_app/screen/product_details.dart';
+// import 'package:vedant_education_app/screen/book_subcategory_screen.dart';
+//
+// import 'account_screen.dart';
+// import 'cart_screen.dart';
+// import 'home.dart';
+//
+//
+// class CategoryPage extends StatefulWidget {
+//
+//   final String? categoryName;
+//
+//   const CategoryPage({super.key, this.categoryName});
+//
+//   @override
+//   State<CategoryPage> createState() => _CategoryPageState();
+// }
+//
+// class _CategoryPageState extends State<CategoryPage> {
+//   int _selectedIndex = 1;
+//   int selectedCategoryIndex = 0;
+//
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//
+//     if (widget.categoryName != null) {
+//       String category = widget.categoryName!;
+//
+//       if (category == "Papers") {
+//         category = "Papers";
+//       }
+//
+//       int index = categories.indexOf(category);
+//
+//       if (index != -1) {
+//         selectedCategoryIndex = index;
+//       }
+//     }
+//   }
+//
+//   final List<String> categories = [
+//     "Bag",
+//     "Books",
+//     "Certificate",
+//     "Id Card",
+//     "Medals",
+//     "Notebooks",
+//     "Progress Card",
+//     "Papers",
+//     "Uniform",
+//   ];
+//
+//   /// ================= BOTTOM NAVIGATION =================
+//   void _onItemTapped(int index) {
+//     setState(() => _selectedIndex = index);
+//
+//     if (index == 0) {
+//       Navigator.pushReplacement(
+//         context,
+//         MaterialPageRoute(builder: (_) => const HomeScreen()),
+//       );
+//     } else if (index == 2) {
+//       Navigator.pushReplacement(
+//         context,
+//         MaterialPageRoute(builder: (_) => const AccountPage()),
+//       );
+//     } else if (index == 3) {
+//       Navigator.pushReplacement(
+//         context,
+//         MaterialPageRoute(builder: (_) => const CartPage()),
+//       );
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("Vedant Education"),
+//         centerTitle: true,
+//       ),
+//
+//       body: Row(
+//         children: [
+//
+//           /// ===== LEFT CATEGORY LIST =====
+//           Container(
+//             width: 120,
+//             color: Colors.blue.shade50,
+//             child: ListView.builder(
+//               itemCount: categories.length,
+//               itemBuilder: (context, index) {
+//                 return InkWell(
+//                   onTap: () => setState(() => selectedCategoryIndex = index),
+//                   child: Container(
+//                     padding: const EdgeInsets.all(15),
+//                     color: selectedCategoryIndex == index
+//                         ? Colors.white
+//                         : Colors.blue.shade50,
+//                     child: Text(
+//                       categories[index],
+//                       style: TextStyle(
+//                         fontWeight: selectedCategoryIndex == index
+//                             ? FontWeight.bold
+//                             : FontWeight.normal,
+//                       ),
+//                     ),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//
+//           /// ===== RIGHT CONTENT =====
+//           Expanded(
+//             child: Padding(
+//               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+//               child: rightContent(),
+//             ),
+//           ),
+//         ],
+//       ),
+//
+//       /// ===== BOTTOM NAV =====
+//       bottomNavigationBar: BottomNavigationBar(
+//         type: BottomNavigationBarType.fixed,
+//         currentIndex: _selectedIndex,
+//         selectedItemColor: Colors.blue,
+//         unselectedItemColor: Colors.grey,
+//         onTap: _onItemTapped,
+//         items: const [
+//           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+//           BottomNavigationBarItem(
+//               icon: Icon(Icons.grid_view), label: 'Category'),
+//           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+//           BottomNavigationBarItem(
+//               icon: Icon(Icons.shopping_cart), label: 'Cart'),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   /// ================= RIGHT SWITCH =================
+//   Widget rightContent() {
+//     final selected = categories[selectedCategoryIndex];
+//
+//     switch (selected) {
+//       case "Bag":
+//         return bagUI();
+//       case "Books":
+//         return booksUI();
+//       case "Certificate":
+//         return certificateUI();
+//       case "Id Card":
+//         return idCardUI();
+//       case "Medals":
+//         return medalsUI();
+//       case "Notebooks":
+//         return notebooksUI();
+//       case "Progress Card":
+//         return progressCardUI();
+//       case "Papers":
+//         return samplePapersUI();
+//       case "Uniform":
+//         return uniformsUI();
+//       default:
+//         return Center(
+//           child: Text(
+//             selected,
+//             style: const TextStyle(fontSize: 18),
+//           ),
+//         );
+//     }
+//   }
+//
+//   /// ================= BAG UI =================
+//   Widget bagUI() {
+//     return SingleChildScrollView(
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           const SectionTitle("Bags"),
+//           Row(children: [
+//             ContentBox(
+//               title: "Bag 1",
+//               imagePath: "assets/image/Bag1.jpg",
+//               onTap: () => openBag(
+//                 id: "bag1",
+//                 name: "School Bag",
+//                 price: 799,
+//                 image: "assets/image/Bag1.jpg",
+//                 description: "Durable school bag with multiple compartments.",
+//               ),
+//             ),
+//             ContentBox(
+//               title: "Bag 2",
+//               imagePath: "assets/image/Bag2.jpg",
+//               onTap: () => openBag(
+//                 id: "bag2",
+//                 name: "Travel Bag",
+//                 price: 999,
+//                 image: "assets/image/Bag2.jpg",
+//                 description: "Large capacity travel bag for students.",
+//               ),
+//             ),
+//           ]),
+//           Row(children: [
+//             ContentBox(
+//               title: "Bag 3",
+//               imagePath: "assets/image/Bag3.jpg",
+//               onTap: () => openBag(
+//                 id: "bag3",
+//                 name: "Kids School Bag",
+//                 price: 850,
+//                 image: "assets/image/Bag3.jpg",
+//                 description: "Comfortable kids school bag with adjustable straps.",
+//               ),
+//             ),
+//             ContentBox(
+//               title: "Bag 4",
+//               imagePath: "assets/image/Bag4.jpeg",
+//               onTap: () => openBag(
+//                 id: "bag4",
+//                 name: "Junior School Bag",
+//                 price: 900,
+//                 image: "assets/image/Bag4.jpeg",
+//                 description: "Stylish junior school bag with strong zip and pockets.",
+//               ),
+//             ),
+//           ]),
+//           Row(children: [
+//             ContentBox(
+//               title: "Bag 5",
+//               imagePath: "assets/image/bag5.jpg",
+//               onTap: () => openBag(
+//                 id: "bag5",
+//                 name: "Senior School Bag",
+//                 price: 1050,
+//                 image: "assets/image/bag5.jpg",
+//                 description: "Large capacity senior school bag for books and notebooks.",
+//               ),
+//             ),
+//             ContentBox(
+//               title: "Bag 6",
+//               imagePath: "assets/image/bag6.jpg",
+//               onTap: () => openBag(
+//                 id: "bag6",
+//                 name: "Waterproof School Bag",
+//                 price: 1100,
+//                 image: "assets/image/bag6.jpg",
+//                 description: "Waterproof school bag to protect books from rain.",
+//               ),
+//             ),
+//           ]),
+//           Row(children: [
+//             ContentBox(
+//               title: "Bag 7",
+//               imagePath: "assets/image/bag7.jpg",
+//               onTap: () => openBag(
+//                 id: "bag7",
+//                 name: "Lightweight School Bag",
+//                 price: 950,
+//                 image: "assets/image/bag7.jpg",
+//                 description: "Lightweight and comfortable bag for daily school use.",
+//               ),
+//             ),
+//             ContentBox(
+//               title: "Bag 8",
+//               imagePath: "assets/image/bag8.jpg",
+//               onTap: () => openBag(
+//                 id: "bag8",
+//                 name: "Multi Pocket Bag",
+//                 price: 1200,
+//                 image: "assets/image/bag8.jpg",
+//                 description: "Multi pocket bag for organizing books and accessories.",
+//               ),
+//             ),
+//           ]),
+//           Row(children: [
+//             ContentBox(
+//               title: "Bag 9",
+//               imagePath: "assets/image/bag9.jpg",
+//               onTap: () => openBag(
+//                 id: "bag9",
+//                 name: "Premium School Bag",
+//                 price: 1350,
+//                 image: "assets/image/bag9.jpg",
+//                 description: "Premium quality school bag with strong material.",
+//               ),
+//             ),
+//             const Spacer(),
+//           ]),
+//         ],
+//       ),
+//     );
+//   }
+//
+//
+//   /// ================= BOOKS UI =================
+//   /// Original grid layout — unchanged.
+//   /// 4 specific items open BookSubCategoryScreen instead of ProductDetailsPage.
+//
+//   Widget booksUI() {
+//     return SingleChildScrollView(
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//
+//           /// PLAY GROUP
+//           const SectionTitle("Play Group"),
+//           Row(children: [
+//             ContentBox(
+//               title: "Merged Books",
+//               imagePath: "assets/image/PlayGroup.jpeg",
+//               onTap: () => openBook("PlayGroup Merged Books"),
+//             ),
+//             ContentBox(
+//               title: "Subject Wise",
+//               imagePath: "assets/image/PlayGroup.jpeg",
+//               onTap: () => openBook("PlayGroup Subject Wise"),
+//             ),
+//           ]),
+//
+//           /// NURSERY
+//           const SectionTitle("Nursery"),
+//           Row(children: [
+//             ContentBox(
+//               title: "Merged Books",
+//               imagePath: "assets/image/Nursery.jpeg",
+//               onTap: () => openBook("Nursery Merged Books"),
+//             ),
+//             ContentBox(
+//               title: "Subject Wise",
+//               imagePath: "assets/image/Nursery.jpeg",
+//               // ✅ Opens sub-category list → 4 items
+//               onTap: () => openSubCategory("Nursery Subject Wise"),
+//             ),
+//           ]),
+//
+//           /// JUNIOR
+//           const SectionTitle("Junior"),
+//           Row(children: [
+//             ContentBox(
+//               title: "Merged Books",
+//               imagePath: "assets/image/JuniorKgEnglish.jpeg",
+//               onTap: () => openBook("Junior Merged Books"),
+//             ),
+//             ContentBox(
+//               title: "Subject Wise",
+//               imagePath: "assets/image/JuniorKgEnglish.jpeg",
+//               // ✅ Opens sub-category list → 2 items
+//               onTap: () => openSubCategory("Junior Subject Wise"),
+//             ),
+//
+//             // ContentBox(
+//             //   title: "Subject Wise",
+//             //   imagePath: "assets/image/JuniorKgEnglish.jpeg",
+//             //   // ✅ Opens sub-category list → 2 items
+//             //   onTap: () => openSubCategory("Junior Subject Wise"),
+//             // ),
+//           ]),
+//
+//           /// SENIOR
+//           const SectionTitle("Senior"),
+//           Row(children: [
+//             ContentBox(
+//               title: "Subject Wise",
+//               imagePath: "assets/image/seniorkgsubjectwise.jpeg",
+//               // ✅ Opens sub-category list → 3 items
+//               onTap: () => openSubCategory("Senior Subject Wise"),
+//             ),
+//             ContentBox(
+//               title: "Merged Books",
+//               imagePath: "assets/image/seniorkgmergebook5.jpeg",
+//               // ✅ Opens sub-category list → 2 items
+//               onTap: () => openSubCategory("Senior Merged Books"),
+//             ),
+//           ]),
+//
+//           // Row(children: [
+//           //   ContentBox(
+//           //     title: "KG Worksheet",
+//           //     imagePath: "assets/image/sakshi.png",
+//           //     onTap: () => openBook("Senior KG Worksheet"),
+//           //   ),
+//           //   const Spacer(),
+//           // ]),
+//
+//           /// ENGLISH CURSIVE
+//           const SectionTitle("English Cursive"),
+//           Row(children: [
+//             ContentBox(
+//               title: "Cursive Level 1",
+//               imagePath: "assets/image/englishlevel1.jpeg",
+//               onTap: () => openBook("English Cursive Level 1"),
+//             ),
+//             ContentBox(
+//               title: "Cursive Level 2",
+//               imagePath: "assets/image/englishcursivelevel2.jpeg",
+//               onTap: () => openBook("English Cursive Level 2"),
+//             ),
+//           ]),
+//
+//           /// MARATHI
+//           const SectionTitle("ગુજરાતી भाषा"),
+//           Row(children: [
+//             ContentBox(
+//               title: "Nursery Book",
+//               imagePath: "assets/image/gujratinursiory.jpeg",
+//               onTap: () => openBook("ગુજરાતી Nursery Book"),
+//             ),
+//             ContentBox(
+//               title: "Junior Kg Book",
+//               imagePath: "assets/image/gujratijr.jpeg",
+//               onTap: () => openBook("ગુજરાતી Junior Kg Book"),
+//             ),
+//           ]),
+//
+//         ],
+//       ),
+//     );
+//   }
+//
+//
+//   /// Opens sub-category list screen for books with multiple sub-items
+//   void openSubCategory(String groupId) {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (_) => BookSubCategoryScreen(groupId: groupId),
+//       ),
+//     );
+//   }
+//
+//   /// Opens product details directly
+//   void openBook(String title) {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (_) => ProductDetailsPage(productId: title),
+//       ),
+//     );
+//   }
+//
+//   void openBag({
+//     required String id,
+//     required String name,
+//     required int price,
+//     required String image,
+//     required String description,
+//   }) {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (_) => ProductDetailsPage(productId: id),
+//       ),
+//     );
+//   }
+//
+//   void openProduct(String id) {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (_) => ProductDetailsPage(productId: id),
+//       ),
+//     );
+//   }
+//
+//
+//   Widget certificateUI() {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SectionTitle("Certificates"),
+//         Row(children: [
+//           ContentBox(
+//             title: "Certificate 1",
+//             imagePath: "assets/image/Certification1.jpeg",
+//             onTap: () => openProduct("Certificate 1"),
+//           ),
+//           ContentBox(
+//             title: "Certificate 2",
+//             imagePath: "assets/image/Certification2.jpeg",
+//             onTap: () => openProduct("Certificate 2"),
+//           ),
+//         ]),
+//         Row(children: [
+//           ContentBox(
+//             title: "Certificate 3",
+//             imagePath: "assets/image/Certification3.jpeg",
+//             onTap: () => openProduct("Certificate 3"),
+//           ),
+//           ContentBox(
+//             title: "Certificate 4",
+//             imagePath: "assets/image/Certification4.jpeg",
+//             onTap: () => openProduct("Certificate 4"),
+//           ),
+//         ]),
+//         Row(children: [
+//           ContentBox(
+//             title: "Certificate 5",
+//             imagePath: "assets/image/Certification5.jpeg",
+//             onTap: () => openProduct("Certificate 5"),
+//           ),
+//           ContentBox(
+//             title: "Certificate 6",
+//             imagePath: "assets/image/Certification6.jpeg",
+//             onTap: () => openProduct("Certificate 6"),
+//           ),
+//         ]),
+//       ],
+//     );
+//   }
+//
+//
+//   Widget idCardUI() {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SectionTitle("ID Cards"),
+//         Row(children: [
+//           ContentBox(
+//             title: "Id Card 1",
+//             imagePath: "assets/image/IdCard1.jpeg",
+//             onTap: () => openProduct("Id Card 1"),
+//           ),
+//           ContentBox(
+//             title: "Id Card 2",
+//             imagePath: "assets/image/IdCard2.jpeg",
+//             onTap: () => openProduct("Id Card 2"),
+//           ),
+//         ]),
+//       ],
+//     );
+//   }
+//
+//
+//   Widget medalsUI() {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SectionTitle("Medals"),
+//         Row(children: [
+//           ContentBox(
+//             title: "Gold Silver Bronze",
+//             imagePath: "assets/image/medals.jpg",
+//             onTap: () => openProduct("Gold Silver Bronze"),
+//           ),
+//           const Spacer(),
+//         ]),
+//       ],
+//     );
+//   }
+//
+//
+//   Widget notebooksUI() {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SectionTitle("Notebooks"),
+//         Row(children: [
+//           ContentBox(
+//             title: "Notebook 1",
+//             imagePath: "assets/image/sakshi.png",
+//             onTap: () => openProduct("Notebook 1"),
+//           ),
+//           ContentBox(
+//             title: "Notebook 2",
+//             imagePath: "assets/image/sakshi.png",
+//             onTap: () => openProduct("Notebook 2"),
+//           ),
+//         ]),
+//         Row(children: [
+//           ContentBox(
+//             title: "Notebook 3",
+//             imagePath: "assets/image/sakshi.png",
+//             onTap: () => openProduct("Notebook 3"),
+//           ),
+//           const Spacer(),
+//         ]),
+//       ],
+//     );
+//   }
+//
+//
+//   Widget progressCardUI() {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SectionTitle("Progress Cards"),
+//         Row(children: [
+//           ContentBox(
+//             title: "Progress Card 1",
+//             imagePath: "assets/image/ProgressCard1.jpeg",
+//             onTap: () => openProduct("Progress Card 1"),
+//           ),
+//           ContentBox(
+//             title: "Progress Card 2",
+//             imagePath: "assets/image/ProgressCard2.jpeg",
+//             onTap: () => openProduct("Progress Card 2"),
+//           ),
+//         ]),
+//         Row(children: [
+//           ContentBox(
+//             title: "Progress Card 3",
+//             imagePath: "assets/image/ProgressCard1.jpeg",
+//             onTap: () => openProduct("Progress Card 3"),
+//           ),
+//           ContentBox(
+//             title: "Progress Card 4",
+//             imagePath: "assets/image/ProgressCard1.jpeg",
+//             onTap: () => openProduct("Progress Card 4"),
+//           ),
+//         ]),
+//       ],
+//     );
+//   }
+//
+//
+//   Widget samplePapersUI() {
+//     Widget clickableItem(String title) {
+//       return ListTile(
+//         title: Text(title),
+//         onTap: () => print("$title clicked"),
+//       );
+//     }
+//
+//     Widget section(String title) {
+//       return Container(
+//         margin: const EdgeInsets.symmetric(vertical: 6),
+//         decoration: BoxDecoration(
+//           border: Border.all(color: Colors.grey),
+//           borderRadius: BorderRadius.circular(12),
+//         ),
+//         child: ExpansionTile(
+//           tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+//           title: Text(
+//             title,
+//             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+//           ),
+//           children: [
+//             clickableItem("Unit 1"),
+//             clickableItem("Test 1"),
+//             clickableItem("Unit 2"),
+//             clickableItem("Test 2"),
+//           ],
+//         ),
+//       );
+//     }
+//
+//     return SingleChildScrollView(
+//       padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         mainAxisAlignment: MainAxisAlignment.start,
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           const SectionTitle("Sample Papers"),
+//           section("Play Group"),
+//           section("Junior"),
+//           section("Nursery"),
+//           section("Senior"),
+//         ],
+//       ),
+//     );
+//   }
+//
+//
+//   Widget uniformsUI() {
+//     return SingleChildScrollView(
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           const SectionTitle("Uniform"),
+//           Row(children: [
+//             ContentBox(
+//               title: "Uniform 1",
+//               imagePath: "assets/image/uniform1.jpg",
+//               onTap: () => openProduct("Uniform 1"),
+//             ),
+//             ContentBox(
+//               title: "Uniform 2",
+//               imagePath: "assets/image/uniform4.jpg",
+//               onTap: () => openProduct("Uniform 2"),
+//             ),
+//           ]),
+//           Row(children: [
+//             ContentBox(
+//               title: "Uniform 3",
+//               imagePath: "assets/image/uniform3.jpg",
+//               onTap: () => openProduct("Uniform 3"),
+//             ),
+//             ContentBox(
+//               title: "Uniform 4",
+//               imagePath: "assets/image/uniform4.jpg",
+//               onTap: () => openProduct("Uniform 4"),
+//             ),
+//           ]),
+//           Row(children: [
+//             ContentBox(
+//               title: "Uniform 5",
+//               imagePath: "assets/image/uniform1.jpg",
+//               onTap: () => openProduct("Uniform 5"),
+//             ),
+//             const Spacer(),
+//           ]),
+//         ],
+//       ),
+//     );
+//   }
+// }
+//
+//
+//
+// /// ================= SECTION TITLE =================
+// class SectionTitle extends StatelessWidget {
+//   final String title;
+//   const SectionTitle(this.title, {super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(vertical: 12),
+//       child: Text(
+//         title,
+//         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//       ),
+//     );
+//   }
+// }
+//
+// /// ================= CONTENT BOX =================
+// class ContentBox extends StatelessWidget {
+//   final String title;
+//   final String imagePath;
+//   final VoidCallback? onTap;
+//
+//   const ContentBox({
+//     super.key,
+//     required this.title,
+//     required this.imagePath,
+//     this.onTap,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Expanded(
+//       child: InkWell(
+//         onTap: onTap,
+//         borderRadius: BorderRadius.circular(12),
+//         child: Container(
+//           height: 170,
+//           margin: const EdgeInsets.all(8),
+//           padding: const EdgeInsets.all(8),
+//           decoration: BoxDecoration(
+//             border: Border.all(color: Colors.grey),
+//             borderRadius: BorderRadius.circular(12),
+//           ),
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               Image.asset(
+//                 imagePath,
+//                 height: 80,
+//                 width: 80,
+//                 fit: BoxFit.cover,
+//               ),
+//               const SizedBox(height: 8),
+//               Text(title, textAlign: TextAlign.center),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+//
+//
+//
+//
+//

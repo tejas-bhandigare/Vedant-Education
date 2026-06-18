@@ -80,26 +80,33 @@ class ProductData {
 
     "PlayGroup Merged Books": {
       "name": "PlayGroup Merged Books",
-      "mrp": 749.0,
-      "discount": 27,
+      "mrp": 1649.0,
+      "discount": 55,
       "image": "assets/image/PlayGroup.jpeg",
       "description": "Complete PlayGroup merged books set",
       "pdfs": [
         {"label": "Book 1", "asset": "assets/pdfs/playgroup_merged/Play_group_book1.pdf"},
         {"label": "Book 2", "asset": "assets/pdfs/playgroup_merged/Play_group_book2.pdf"},
+        {"label": "Book 3", "asset": "assets/pdfs/playgroup_merged/Play_group_book1.pdf"},// missing pdf Playgorup book 3
+        {"label": "Book 4", "asset": "assets/pdfs/playgroup_merged/Play_group_book2.pdf"},// mkssing pdf playgoup book 4
       ],
     },
 
     "PlayGroup Subject Wise": {
       "name": "PlayGroup Subject Wise",
-      "mrp": 599.0,
-      "discount": 27,
+      "mrp": 1649.0,
+      "discount": 55,
       "image": "assets/image/PlayGroup.jpeg",
-      "description": "PlayGroup subject wise books set",
+      "description": "PlayGroup subject wise books set\n"
+          "English \n"
+          "Maths\n"
+          "EVS\n"
+          "Art & Craft , Rhymes\n",
       "pdfs": [
         {"label": "English",  "asset": "assets/pdfs/playgroup_subject/PG English 1.8.1.pdf"},
         {"label": "Maths",    "asset": "assets/pdfs/playgroup_subject/PG Maths 1.8.1.pdf"},
         {"label": "EVS",      "asset": "assets/pdfs/playgroup_subject/PG EVS 1.8.1.pdf"},
+        {"label": "Rhymes & Stories ", "asset": "assets/pdfs/playgroup_subject/PG EVS 1.8.1.pdf"},// missing pdf
       ],
     },
 
@@ -111,7 +118,12 @@ class ProductData {
       "mrp": 1749.0,
       "discount": 51,
       "image": "assets/image/Nursery.jpeg",
-      "description": "Complete Nursery merged books",
+      "description": "Book No.1\n"
+          "Book No.2\n"
+          "Book No.3\n"
+          "Book No.4\n"
+          "Book No.5\n"
+          "Note : Maths 1-50 Number Also Available if Required\n",
       "pdfs": [
         {"label": "Book 1", "asset": "assets/pdfs/nursery_merged/Nursery Book 1.pdf"},
         {"label": "Book 2", "asset": "assets/pdfs/nursery_merged/Nursery Book 2.pdf"},
@@ -125,47 +137,66 @@ class ProductData {
 
     // ── Nursery Subject Wise sub-products (4 items) ──
 
+
+    /// All pdf missing Nursory Subject WISE
+
+
     "Nursery Subjectwise Books": {
       "name": "Nursery Subjectwise Books",
-      "mrp": 649.0,
-      "discount": 27,
+      "mrp": 1749.0,
+      "discount": 54,
       "image": "assets/image/Nursery.jpeg",
-      "description": "English- LTI PATTERN or...",
+      "description": "English- LTI PATTERN\n "
+                     "OR\n"
+                     "English - ABCD Pattern\n"
+                     "Mathematics\n"
+                      "EVS\n"
+                      "Art & Craft Without Hindi Content 1.8.1\n"
+                      "Art & Craft ,Rhymes & Drawing Books\n"
+                      "Notes : Maths 1-50 Number Also Available if Required\n",
+
       "pdfs": [
-        {"label": "English",  "asset": "assets/pdfs/nursery_subject/english.pdf"},
-        {"label": "Maths",    "asset": "assets/pdfs/nursery_subject/maths.pdf"},
-        {"label": "EVS",      "asset": "assets/pdfs/nursery_subject/evs.pdf"},
+        {"label": "Maths",  "asset": "assets/pdfs/nursery_subject/nursery_subjectwise_Book_LTI_Pattern/Nursery MATHS 1.6.1.pdf"},
+        {"label": "EVS",    "asset": "assets/pdfs/nursery_subject/nursery_subjectwise_Book_LTI_Pattern/Nursery EVS Book 1.7.1.pdf"},
+        {"label": "Art & Craft ,Rhymes , Story",      "asset": "assets/pdfs/nursery_subject/nursery_subjectwise_Book_LTI_Pattern/Nursery Art And Craft, Story, Rhymes, Drawing Book 1.7.1.pdf"},
+        {"label": "English LTI",  "asset": "assets/pdfs/nursery_subject/nursery_subjectwise_Book_LTI_Pattern/Nursery English LTI 1.8.1.pdf"},
+        {"label": "English ABCD Pattern",    "asset": "assets/pdfs/nursery_subject/nursery_subjectwise_Book_LTI_Pattern/Nursery English ABCD 1.8.1.pdf"},
+        {"label": "Art & Craft Without Hindi Content 1.8.1",      "asset": "assets/pdfs/nursery_subject/evs.pdf"},///misiing pdf
       ],
     },
 
     "Nursery Hindi Reading Book": {
       "name": "हिंदी",
-      "mrp": 199.0,
-      "discount": 27,
+      "mrp": 299.0,
+      "discount": 50,
       "image": "assets/image/Nursery.jpeg",
       "description": "Reading Book",
       "pdfs": [
-        {"label": "Hindi Reading", "asset": "assets/pdfs/nursery_subject/hindi_reading.pdf"},
+        {"label": "Hindi Reading", "asset": "assets/pdfs/nursery_subject/hindi/Nursery Hindi Book 1.6.1.pdf"},
       ],
     },
 
     "Nursery Hindi L-1": {
       "name": "Nursery Hindi L-1",
-      "mrp": 199.0,
-      "discount": 27,
+      "mrp": 311.0,
+      "discount": 52,
       "image": "assets/image/nursoryhindil1.jpeg",
       "description": "Writing Book",
       "pdfs": [
-        {"label": "Hindi Writing", "asset": "assets/pdfs/nursery_subject/hindi_writing.pdf"},
+        {"label": "Hindi Writing", "asset": "assets/pdfs/nursery_subject/nursery_hindi L1/Jr. KG Book Hindi 1.6.1 Level 1.pdf"},
       ],
     },
 
     "Nursery Drawing Book": {
       "name": "Drawing Book (Optional)",
-      "mrp": 149.0,
-      "discount": 27,
+      "mrp": 329.0,
+      "discount": 55,
       "image": "assets/image/sakshi.png",
-      "description": "Optional - No Quantity Restriction",
+      "description": "Optional - No Quantity Restriction\n"
+                     "You can Use it for any class\n",
+      "pdfs": [
+        {"label": "Nursery Drawing Book", "asset": "assets/pdfs/nursery_subject/Drawing_Book(Optional)/Nursery Drawing Book 1.7.1.pdf"},
+      ],
     },
 
 
@@ -173,10 +204,20 @@ class ProductData {
 
     "Junior Merged Books": {
       "name": "Junior Merged Books",
-      "mrp": 899.0,
-      "discount": 27,
+      "mrp": 1949.0,
+      "discount": 54,
       "image": "assets/image/JuniorKgEnglish.jpeg",
-      "description": "Complete Junior KG merged books",
+      "description": "Book No. 1\n"
+                     "Book No. 2\n"
+                     "Book No. 3\n"
+                     "Book No. 4\n"
+                     "Book No. 5\n"
+                     "OR\n"
+                     "Note : Extra Content if required \n"
+                     "Level 2\n"
+                     "Book Also Available\n"
+                     "क से ज्ञ  तक \n"
+                     "Number 51 -100\n",
       "pdfs": [
         {"label": "Book 1", "asset": "assets/pdfs/junior_merged/Jr. KG Book 1-1.8.1.pdf"},
         {"label": "Book 2", "asset": "assets/pdfs/junior_merged/Jr. KG Book 2-1.8.1.pdf"},
@@ -191,25 +232,39 @@ class ProductData {
 
     "Junior Kg Subject wise": {
       "name": "Junior Kg Subject wise",
-      "mrp": 699.0,
-      "discount": 27,
+      "mrp": 1949.0,
+      "discount": 54,
       "image": "assets/image/JuniorKgEnglish.jpeg",
-      "description": "English\nहिंदी 1.6.1...",
+      "description":
+      "English\n"
+      "हिंदी 1.6.1\n"
+      "OR\n"
+      "हिंदी 1.6.2\n"
+      "Maths\n"
+      "EVS\n"
+      "OR\n"
+      "EVS 1.8.1\n"
+      "Art & Craft,Poems & Stories\n"
+      "Art & Craft Without Hindi Content 1.8.1\n"
+      ,
       "pdfs": [
         {"label": "English",  "asset": "assets/pdfs/junior_subject/Jr KG Book English 1.7.1.pdf"},
-        {"label": "Maths",    "asset": "assets/pdfs/junior_subject/Jr. KG Book MATHS 1.6.2.pdf"},
+        {"label": "Maths 1.6.2",    "asset": "assets/pdfs/junior_subject/Jr. KG Book MATHS 1.6.2.pdf"},
         {"label": "EVS",      "asset": "assets/pdfs/junior_subject/Jr. KG  EVS 1.7.1.pdf"},
-        {"label": "Hindi",    "asset": "assets/pdfs/junior_subject/Jr. KG Book Hindi 1.6.1 Level 1.pdf"},
-        {"label": "Story & Activities",      "asset": "assets/pdfs/junior_subject/Jr. KG Book Story & Activities 1.7.1.pdf"},
-
+        {"label": "Hindi 1.6.1",    "asset": "assets/pdfs/junior_subject/Jr. KG Book Hindi 1.6.1 Level 1.pdf"},
+        {"label": " Art & Craft,Story & Rhymes",      "asset": "assets/pdfs/junior_subject/Jr. KG Book Story & Activities 1.7.1.pdf"},//missing pdf
+        {"label": " Art & Craft Without Hindi Content 1.8.1",      "asset": "assets/pdfs/junior_subject/Jr. KG Book Story & Activities 1.7.1.pdf"},//missing pdf
+        {"label": "Maths 1.7.2",    "asset": "assets/pdfs/junior_subject/Jr. KG Book MATHS 1.6.2.pdf"}, ///missing pdf
+        {"label": "Hindi 1.6.2",    "asset": "assets/pdfs/junior_subject/Jr. KG Book Hindi 1.6.2 Level 2.pdf"},///missing pdf
+        {"label": "EVS 1.8.1",      "asset": "assets/pdfs/junior_subject/Jr. KG  EVS 1.7.1.pdf"},///missing pdf
       ],
     },
 
     "Marathi Level 1 Book": {
       "name": "Marathi Level 1 Book",
       "mrp": 399.0,
-      "discount": 55,
-      "image": "assets/image/MarathiL1.jpeg",
+      "discount": 55,     
+      "image": "assets/image/marathijrl1.jpeg",
       "description": "Level 1",
       "pdfs": [
         {"label": "Marathi L1", "asset": "assets/pdfs/junior_subject/Marathi Book 1.8.1 Level-1.pdf"},
@@ -217,6 +272,29 @@ class ProductData {
     },
 
 
+    /// all pdf mising
+    "Junior Kg Merge अ से ज्ञ": {
+      "name": "Junior Kg Merge अ से ज्ञ",
+      "mrp": 1949.0,
+      "discount": 54,
+      "image": "assets/image/MarathiL1.jpeg",
+      "description":
+          "Level 2 Books\n"
+          "Book No.1\n"
+          "Book No.2\n"
+          "Book No.3\n"
+          "Book No.4\n"
+          "Book No.5\n"
+
+      ,
+      "pdfs": [
+        {"label": "Book No.1", "asset": "assets/pdfs/junior_subject/Marathi Book 1.8.1 Level-1.pdf"},///missing pdf
+        {"label": "Book No.2", "asset": "assets/pdfs/junior_subject/Marathi Book 1.8.1 Level-1.pdf"},///missing pdf
+        {"label": "Book No.3", "asset": "assets/pdfs/junior_subject/Marathi Book 1.8.1 Level-1.pdf"},///missing pdf
+        {"label": "Book No.4", "asset": "assets/pdfs/junior_subject/Marathi Book 1.8.1 Level-1.pdf"},///missing pdf
+        {"label": "Book No.5", "asset": "assets/pdfs/junior_subject/Marathi Book 1.8.1 Level-1.pdf"},///missing pdf
+      ],
+    },
 
 
 
@@ -227,23 +305,38 @@ class ProductData {
 
     "Senior Kg Subjectwise": {
       "name": "Senior Kg Subjectwise",
-      "mrp": 749.0,
-      "discount": 27,
+      "mrp": 1999.0,
+      "discount": 53,
       "image": "assets/image/seniorkgsubjectwise.jpeg",
-      "description": "English 1.7.1 OR...",
+      "description": "English 1.7.1\n"
+      "OR\n"
+      "English 1.8.1\n"
+      "हिंदी 1.6.1\n"
+      "Or\n"
+      "हिंदी मात्रा 1.6.2\n"
+      "Maths\n"
+      "EVS\n"
+      "Art & Craft,Poems & Stories\n"
+      "Or\n"
+      "Art & Craft without Hindi Content 1.8.1\n",
       "pdfs": [
-        {"label": "Maths 1.6.2",  "asset": "assets/pdfs/senior_subject/English 1.7.1.pdf"},
-        {"label": "Hindi 1.6.1",    "asset": "assets/pdfs/senior_subject/HINDI 1.6.1.pdf"},
-        {"label": "EVS GK",      "asset": "assets/pdfs/senior_subject/EVS GK.pdf"},
         {"label": "Math 1.6.2",  "asset": "assets/pdfs/senior_subject/Sr. KG Book MATHS 1.6.2.pdf"},
+        {"label": "English 1.7.1",  "asset": "assets/pdfs/senior_subject/English 1.7.1.pdf"},
+        {"label": "हिंदी 1.6.1", "asset": "assets/pdfs/senior_subject/HINDI 1.6.1.pdf"},
+        {"label": "EVS GK",      "asset": "assets/pdfs/senior_subject/EVS GK.pdf"},
+
+        {"label": "Art & Craft ,Stories and Rhymes 1.6.2",  "asset": "assets/pdfs/senior_subject/Sr. KG Book MATHS 1.6.2.pdf"},/// missing pdfs
+        {"label": "हिंदी मात्रा 1.6.2",  "asset": "assets/pdfs/senior_subject/Sr. KG Book MATHS 1.6.2.pdf"},///missing
+        {"label": "English 1.8.1",  "asset": "assets/pdfs/senior_subject/Sr. KG Book MATHS 1.6.2.pdf"},///mising pdf
+        {"label": "Art and Craft Without Hindi Content 1.8.1",  "asset": "assets/pdfs/senior_subject/Sr. KG Book MATHS 1.6.2.pdf"},/// missing pdf
 
       ],
     },
 
     "Marathi Level 2 Book": {
       "name": "Marathi Level 2 Book",
-      "mrp": 249.0,
-      "discount": 27,
+      "mrp": 399.0,
+      "discount": 53,
       "image": "assets/image/MarathiL2.jpeg",
       "description": "Level 2",
       "pdfs": [
@@ -253,8 +346,8 @@ class ProductData {
 
     "Marathi Level 3 Book": {
       "name": "Marathi Level 3 Book",
-      "mrp": 249.0,
-      "discount": 27,
+      "mrp": 399.0,
+      "discount": 53,
       "image": "assets/image/MarathiL3.jpeg",
       "description": "Marathi Matra Book",
       "pdfs": [
@@ -266,10 +359,14 @@ class ProductData {
 
     "Senior Kg Merge Books": {
       "name": "Senior Kg Merge Books",
-      "mrp": 949.0,
-      "discount": 27,
+      "mrp": 1999.0,
+      "discount": 53,
       "image": "assets/image/seniorkgmergebook5.jpeg",
-      "description": "Book No. 1\nBook No. ...",
+      "description": "Book No. 1\n"
+          "Book No. 2\n"
+          "Book No. 3\n"
+          "Book No. 4\n"
+          "Book No. 5\n",
       "pdfs": [
         {"label": "Book 1", "asset": "assets/pdfs/senior_merged/Sr. KG Book 1 1.8.2.pdf"},
         {"label": "Book 2", "asset": "assets/pdfs/senior_merged/Sr. KG Book 2 1.8.2.pdf"},
@@ -281,10 +378,16 @@ class ProductData {
 
     "Senior Kg Level 2": {
       "name": "Senior Kg Level 2",
-      "mrp": 949.0,
-      "discount": 27,
+      "mrp": 1999.0,
+      "discount": 53,
       "image": "assets/image/seniorkglevel2.jpeg",
-      "description": "Book No. 1\nBook No....",
+      "description":
+              "Book No. 1\n"
+              "Book No. 2\n"
+              "Book No. 3\n"
+              "Book No. 4\n"
+              "Book No. 5\n"
+      ,
       "pdfs": [
         {"label": "Book 1", "asset": "assets/pdfs/senior_merged/level2/Sr. KG Book 1 1.8.2.pdf"},
         {"label": "Book 2", "asset": "assets/pdfs/senior_merged/level2/Sr. KG Book 2 1.8.2.pdf"},
@@ -294,17 +397,6 @@ class ProductData {
       ],
     },
 
-    // "Senior KG Worksheet": {
-    //   "name": "Senior KG Worksheet",
-    //   "mrp": 299.0,
-    //   "discount": 27,
-    //   "image": "assets/image/sakshi.png",
-    //   "description": "Senior KG worksheets",
-    //   "pdfs": [
-    //     {"label": "Worksheet 1", "asset": "assets/pdfs/senior_worksheet/worksheet1.pdf"},
-    //     {"label": "Worksheet 2", "asset": "assets/pdfs/senior_worksheet/worksheet2.pdf"},
-    //   ],
-    // },
 
 
     /// ================= ENGLISH CURSIVE =================
@@ -312,40 +404,27 @@ class ProductData {
 
     "English Cursive Level 1": {
       "name": "English Cursive Level 1",
-      "mrp": 199.0,
-      "discount": 27,
+      "mrp": 299.0,
+      "discount": 54,
       "image": "assets/image/englishlevel1.jpeg",
       "description": "English cursive writing level 1",
       "pdfs": [
         {"label": "Cursive L1", "asset": "assets/pdfs/english_cursive_levels/English Cursive Book Level 1.pdf"},
       ],
     },
-    // "English Cursive Level 1": {
-    //   "name": "English Cursive Level 1",
-    //   "mrp": 199.0,
-    //   "discount": 27,
-    //   "image": "assets/image/englishlevel1.jpeg",
-    //   "description": "English cursive writing level 1",
-    // },
 
 
     "English Cursive Level 2": {
       "name": "English Cursive Level 2",
-      "mrp": 249.0,
-      "discount": 27,
+      "mrp": 299.0,
+      "discount": 54,
       "image": "assets/image/englishcursivelevel2.jpeg",
       "description": "English cursive writing level 2",
       "pdfs": [
         {"label": "Cursive L2", "asset": "assets/pdfs/english_cursive_levels/English Cursive Book Level 2.pdf"},
       ],
     },
-    // "English Cursive Level 2": {
-    //   "name": "English Cursive Level 2",
-    //   "mrp": 249.0,
-    //   "discount": 27,
-    //   "image": "assets/image/englishcursivelevel2.jpeg",
-    //   "description": "English cursive writing level 2",
-    // },
+
 
 
     /// ================= ગુજરાતી =================
@@ -353,10 +432,10 @@ class ProductData {
 
     "ગુજરાતી Nursery Book": {
       "name": "ગુજરાતી Nursery Book",
-      "mrp": 199.0,
-      "discount": 27,
+      "mrp": 279.0,
+      "discount": 39,
       "image": "assets/image/gujratinursiory.jpeg",
-      "description": "Marathi Nursery language book",
+      "description": "No Quantity Restrictions",
       "pdfs": [
         {"label": "Book 1", "asset": "assets/pdfs/gujarati/Gujrati Junior Kg Book.pdf"},
       ],
@@ -364,30 +443,16 @@ class ProductData {
 
     "ગુજરાતી Junior Kg Book": {
       "name": "ગુજરાતી Junior Kg Book",
-      "mrp": 249.0,
-      "discount": 27,
+      "mrp": 289.0,
+      "discount": 38,
       "image": "assets/image/gujratijr.jpeg",
-      "description": "Marathi Junior KG book",
+      "description": "No Quantity Restrictions",
       "pdfs": [
         {"label": "Book 1", "asset": "assets/pdfs/gujarati/Nursery Gujarati Book.pdf"},
       ],
     },
 
-    // "ગુજરાતી Nursery Book": {
-    //   "name": "ગુજરાતી Nursery Book",
-    //   "mrp": 199.0,
-    //   "discount": 27,
-    //   "image": "assets/image/gujratinursiory.jpeg",
-    //   "description": "Marathi Nursery language book",
-    // },
-    //
-    // "ગુજરાતી Junior Kg Book": {
-    //   "name": "ગુજરાતી Junior Kg Book",
-    //   "mrp": 249.0,
-    //   "discount": 27,
-    //   "image": "assets/image/gujratijr.jpeg",
-    //   "description": "Marathi Junior KG book",
-    // },
+
 
 
     /// ================= CERTIFICATES =================
