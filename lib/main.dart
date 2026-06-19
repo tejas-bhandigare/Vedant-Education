@@ -14,7 +14,7 @@ import 'package:flutter/services.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ✅ Supabase initialization (KEEP THIS)
+  //  Supabase initialization (KEEP THIS)
   await SupabaseClientManager.initialize();
 
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
 
-         // ✅ Use whichever screen you want
+         //  Use whichever screen you want
 
        // home: SplashScreen(),
            home: AuthGate(),

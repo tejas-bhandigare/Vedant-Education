@@ -34,7 +34,7 @@ class _CategoryPageState extends State<CategoryPage> {
     "Medals",
     "Notebooks",
     "Progress Card",
-    "Papers",
+    // "Papers",
     "Uniform",
   ];
 
@@ -199,7 +199,7 @@ class _CategoryPageState extends State<CategoryPage> {
       case "Medals":     return medalsUI();
       case "Notebooks":  return notebooksUI();
       case "Progress Card": return progressCardUI();
-      case "Papers":     return samplePapersUI();
+      // case "Papers":     return samplePapersUI();
       case "Uniform":    return uniformsUI();
       default:
         return Center(
@@ -626,52 +626,52 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   /// ================= SAMPLE PAPERS UI =================
-  Widget samplePapersUI() {
-    Widget clickableItem(String title) {
-      return ListTile(
-        title: Text(title),
-        onTap: () => print("$title clicked"),
-      );
-    }
+  // Widget samplePapersUI() {
+  //   Widget clickableItem(String title) {
+  //     return ListTile(
+  //       title: Text(title),
+  //       onTap: () => print("$title clicked"),
+  //     );
+  //   }
 
-    Widget section(String title) {
-      return Container(
-        margin: const EdgeInsets.symmetric(vertical: 6),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: ExpansionTile(
-          tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-          title: Text(
-            title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          children: [
-            clickableItem("Unit 1"),
-            clickableItem("Test 1"),
-            clickableItem("Unit 2"),
-            clickableItem("Test 2"),
-          ],
-        ),
-      );
-    }
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SectionTitle("Sample Papers"),
-          section("Play Group"),
-          section("Junior"),
-          section("Nursery"),
-          section("Senior"),
-        ],
-      ),
-    );
-  }
+  //   Widget section(String title) {
+  //     return Container(
+  //       margin: const EdgeInsets.symmetric(vertical: 6),
+  //       decoration: BoxDecoration(
+  //         border: Border.all(color: Colors.grey),
+  //         borderRadius: BorderRadius.circular(12),
+  //       ),
+  //       child: ExpansionTile(
+  //         tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+  //         title: Text(
+  //           title,
+  //           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //         ),
+  //         children: [
+  //           clickableItem("Unit 1"),
+  //           clickableItem("Test 1"),
+  //           clickableItem("Unit 2"),
+  //           clickableItem("Test 2"),
+  //         ],
+  //       ),
+  //     );
+  //   }
+  //
+  //   return SingleChildScrollView(
+  //     padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         const SectionTitle("Sample Papers"),
+  //         section("Play Group"),
+  //         section("Junior"),
+  //         section("Nursery"),
+  //         section("Senior"),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   /// ================= UNIFORMS UI =================
   Widget uniformsUI() {
